@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: black
+@font-face {
+  font-family: "Manaspace";
+  font-weight: 400;
+  src: url("/fonts/Manaspace.ttf");
+}
+
+@font-face {
+  font-family: "Internal Rainbows";
+  font-weight: 400;
+  src: url("/fonts/InternalRainbows.otf");
+}
+
+html {
+  background: #1100ff;
 }
