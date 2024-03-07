@@ -129,7 +129,7 @@ const useConfig = () => {
             .setScale(1.1);
           pared.scaleX = 1.3;
           pared.body
-            .setSize(pared.width, pared.height / 1.4, false)
+            .setSize(pared.width, pared.height / 1.2, false)
             .setOffset(-0.5, 0);
           const nevera = this.physics.add
             .staticImage(0, 0, "nevera")
@@ -137,7 +137,7 @@ const useConfig = () => {
             .setScale(1.1);
           nevera.scaleX = 1.4;
           nevera.body
-            .setSize(nevera.width * 2, nevera.height, false)
+            .setSize(nevera.width * 2, nevera.height *1.1, false)
             .setOffset(0, 0);
           const maquina = this.physics.add
             .staticImage(
@@ -232,8 +232,8 @@ const useConfig = () => {
               "muchacho"
             )
             .setScale(3.3)
-            .setOrigin(0)
-            .setOffset(0.5, 0.5);
+            // .setOrigin(0)
+            // .setOffset(0.5, 0.5);
 
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
@@ -308,9 +308,6 @@ const useConfig = () => {
           });
 
           this.muchacho.anims.play("inactivo");
-
-          this.add.graphics().setAlpha(0.75);
-          this.physics.world.createDebugGraphic();
         }
 
         update() {
@@ -361,7 +358,7 @@ const useConfig = () => {
           default: "arcade",
           arcade: {
             gravity: { y: 0, x: 0 },
-            debug: true,
+            // debug: true,
           },
         },
         scene: [CustomPhaserScene],
