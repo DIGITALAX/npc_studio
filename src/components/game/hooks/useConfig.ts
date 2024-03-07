@@ -356,6 +356,17 @@ const useConfig = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return {
     gameRef,
   };
