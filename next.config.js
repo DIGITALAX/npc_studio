@@ -1,9 +1,6 @@
-
 /** @type {import('next').NextConfig} */
 
-const allowedOrigins = [
-  "https://thedial.infura-ipfs.io",
-];
+const allowedOrigins = ["https://thedial.infura-ipfs.io"];
 
 const nextConfig = {
   reactStrictMode: false,
@@ -24,6 +21,15 @@ const nextConfig = {
       },
     ],
     unoptimized: true,
+  },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.plugins.push(
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^phaser3spectorjs$/,
+      })
+    );
+
+    return config;
   },
   trailingSlash: true,
   async headers() {

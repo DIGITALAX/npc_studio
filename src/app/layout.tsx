@@ -15,6 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Head>
+        <title>NPC Studio</title>
+        <meta name="og:image" content="https://www.npcstudio.xyz/card.png/" />
         <link
           rel="preload"
           href="https://npcstudio.xyz/fonts/InternalRainbows.otf"
@@ -47,7 +49,11 @@ export default function RootLayout({
           }}
         />
       </Head>
-      <body>{children}</body>
+
+      <body>
+        {children}
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.js"></script>
+      </body>
     </html>
   );
 }
