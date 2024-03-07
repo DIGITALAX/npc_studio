@@ -1,16 +1,12 @@
 "use client";
-import useConfig from "@/components/game/hooks/useConfig";
-import { RefObject } from "react";
+import dynamic from "next/dynamic";
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("@/components/game/modules/Studio"),
+  { ssr: false }
+);
 
 function Home() {
-  const { gameRef } = useConfig();
-
-  return (
-    <div
-      ref={gameRef as RefObject<HTMLDivElement>}
-      className="relative w-full h-full flex"
-    />
-  );
+  return <DynamicComponentWithNoSSR />;
 }
 
 export default Home;
