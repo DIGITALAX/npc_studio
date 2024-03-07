@@ -108,13 +108,13 @@ const useConfig = () => {
           );
           this.load.spritesheet(
             "muchacho",
-            `${INFURA_GATEWAY}/ipfs/QmZrkeyDHE32gx7nnzjpgMy1hEy7kZu59rxYjuJKcyiqZo`,
+            `${INFURA_GATEWAY}/ipfs/QmceXoKkssCdiex6UJKeFBERx7CrxZrDKHVHgcWoJhBdE5`,
             {
-              frameWidth: 60.8,
-              frameHeight: 61.8,
+              frameWidth: 33.45,
+              frameHeight: 61.2,
               margin: 0,
               startFrame: 0,
-              endFrame: 64,
+              endFrame: 35,
             }
           );
         }
@@ -206,7 +206,6 @@ const useConfig = () => {
               "escritorio4"
             )
             .setOrigin(1, 1);
-
           const arcade = this.physics.add
             .staticImage(window.innerWidth, window.innerHeight, "arcade")
             .setOrigin(1, 1)
@@ -233,7 +232,8 @@ const useConfig = () => {
               "muchacho"
             )
             .setScale(3.3)
-            .setOrigin(1, 1);
+            .setOrigin(0)
+            .setOffset(0.5, 0.5);
 
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
@@ -270,72 +270,44 @@ const useConfig = () => {
           this.physics.add.collider(this.muchacho, sofaUno);
           this.physics.add.collider(this.muchacho, sofaDos);
           this.muchacho.setCollideWorldBounds(true);
-
           this.anims.create({
-            key: "idle",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 8,
-              end: 15,
-            }),
-            frameRate: 5,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "up",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 24,
-              end: 32,
-            }),
-            frameRate: 5,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "left",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 33,
-              end: 41,
-            }),
-            frameRate: 5,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "down",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 42,
-              end: 50,
-            }),
-            frameRate: 5,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "right",
-            frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 51,
-              end: 59,
-            }),
-            frameRate: 5,
-            repeat: -1,
-          });
-          this.anims.create({
-            key: "diagonalRightUp",
+            key: "arriba",
             frames: this.anims.generateFrameNumbers("muchacho", {
               start: 0,
-              end: 7,
+              end: 8,
             }),
             frameRate: 5,
             repeat: -1,
           });
           this.anims.create({
-            key: "diagonalLeftDown",
+            key: "izquierda",
             frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 16,
-              end: 23,
+              start: 9,
+              end: 17,
+            }),
+            frameRate: 5,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "abajo",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 18,
+              end: 26,
+            }),
+            frameRate: 5,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "derecha",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 27,
+              end: 35,
             }),
             frameRate: 5,
             repeat: -1,
           });
 
-          this.muchacho.anims.play("idle");
+          this.muchacho.anims.play("inactivo");
 
           this.add.graphics().setAlpha(0.75);
           this.physics.world.createDebugGraphic();

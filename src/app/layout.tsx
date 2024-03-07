@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "NPC Studio",
   description:
-    "Equip your AI workforce. Train for less idle time. Try to survive in style",
+    "Equip your AI workforce. Train for less idle time. Try to survive in style.",
 };
 
 export default function RootLayout({
