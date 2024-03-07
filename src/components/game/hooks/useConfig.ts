@@ -32,7 +32,31 @@ const useConfig = () => {
         preload() {
           this.load.image(
             "fondo",
-            `${INFURA_GATEWAY}/ipfs/QmRNsEUNkGC4fsSGpbRz6Y2viVKP6khgVbyh5xW4Kn1s7Z`
+            `${INFURA_GATEWAY}/ipfs/QmQho15EawdPjxhZ6QcnFoGHiEV8r2dTS1u7TczQv9cd44`
+          );
+          this.load.image(
+            "pared",
+            `${INFURA_GATEWAY}/ipfs/QmcR8PpyDhRaUzJJW5UoxhnyzqNk88imgXS2MGuhgfYsYK`
+          );
+          this.load.image(
+            "nevera",
+            `${INFURA_GATEWAY}/ipfs/QmaGoMNwYt7aEgG6AoKGmDdmWUQgshQ8KtASkgoHKgmcS2`
+          );
+          this.load.image(
+            "maquina",
+            `${INFURA_GATEWAY}/ipfs/QmVubKFGVcdfZS2pSEhmK8DtpFWbiC8H2BX11VPTd9xnNp`
+          );
+          this.load.image(
+            "sofaUno",
+            `${INFURA_GATEWAY}/ipfs/QmQfqKAD2Hepe9kQ9VxBSNmwZrywCvuPrnAr5AiF4bMvwB`
+          );
+          this.load.image(
+            "sofaDos",
+            `${INFURA_GATEWAY}/ipfs/QmUFsXQpp1ZZWKWCnHAED4pgZgeLSBnp4ofMz9ae1BkhAR`
+          );
+          this.load.image(
+            "alfombra",
+            `${INFURA_GATEWAY}/ipfs/QmQaZhrMnuwkKbP2UbYtnMxRiUcpZfNGyuEhGuqd7xcFAj`
           );
           this.load.image(
             "escritorio1",
@@ -99,6 +123,53 @@ const useConfig = () => {
           const fondo = this.add.image(0, 0, "fondo").setOrigin(0, 0);
           fondo.displayWidth = window.innerWidth;
           fondo.displayHeight = window.innerHeight;
+          const pared = this.physics.add
+            .staticImage(fondo.width, 0, "pared")
+            .setOrigin(0.62, 0)
+            .setScale(1.1);
+          pared.scaleX = 1.3;
+          pared.body
+            .setSize(pared.width, pared.height / 1.4, false)
+            .setOffset(-0.5, 0);
+          const nevera = this.physics.add
+            .staticImage(0, 0, "nevera")
+            .setOrigin(0, 0)
+            .setScale(1.1);
+          nevera.scaleX = 1.4;
+          nevera.body
+            .setSize(nevera.width * 2, nevera.height, false)
+            .setOffset(0, 0);
+          const maquina = this.physics.add
+            .staticImage(
+              nevera.width + nevera.width / 2,
+              nevera.height / 7,
+              "maquina"
+            )
+            .setOrigin(0, 0)
+            .setScale(1.1);
+          maquina.scaleX = 1.6;
+          maquina.body
+            .setSize(maquina.width, maquina.height / 2, false)
+            .setOffset(maquina.width, maquina.height / 2);
+          const alfombra = this.add
+            .image(fondo.width / 4, fondo.height / 2, "alfombra")
+            .setOrigin(0, 0)
+            .setScale(1.2);
+          alfombra.scaleX = 1.5;
+          const sofaUno = this.physics.add
+            .staticImage(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
+            .setOrigin(0, 0)
+            .setScale(1.2);
+          sofaUno.body
+            .setSize(sofaUno.width, sofaUno.height, false)
+            .setOffset(sofaUno.width / 2.4, -sofaUno.height / 1.3);
+          const sofaDos = this.physics.add
+            .staticImage(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
+            .setOrigin(0, 0)
+            .setScale(1.2);
+          sofaDos.body
+            .setSize(sofaUno.width, sofaUno.height, false)
+            .setOffset(sofaUno.width / 2.4, -sofaUno.height / 1.3);
           this.panelDeControl = this.add
             .image(
               window.innerWidth,
@@ -107,7 +178,6 @@ const useConfig = () => {
             )
             .setOrigin(1, 1);
 
-          // escritorios
           this.escritorio1 = this.add
             .image(
               window.innerWidth - 20,
@@ -115,32 +185,6 @@ const useConfig = () => {
               "escritorio1"
             )
             .setOrigin(1, 1);
-          const bordeIzquierdo = this.physics.add
-            .staticImage(
-              this.escritorio1.x - this.escritorio1.width / 2,
-              this.escritorio1.y,
-              "pixelInvisible"
-            )
-            .setOrigin(1, 1)
-            .setVisible(false);
-          const bordeDerecho = this.physics.add
-            .staticImage(
-              this.escritorio1.x + this.escritorio1.width / 2,
-              this.escritorio1.y,
-              "pixelInvisible"
-            )
-            .setOrigin(1, 1)
-            .setVisible(false);
-          bordeIzquierdo.body
-            .setSize(this.escritorio1.width / 4.5, this.escritorio1.width / 5.5)
-            .setOffset(
-              -this.escritorio1.width / 0.9,
-              -this.escritorio1.height / 1.3
-            );
-          bordeDerecho.body
-            .setSize(this.escritorio1.width / 4, this.escritorio1.width / 5)
-            .setOffset(-this.escritorio1.width, 0);
-
           this.escritorio2 = this.add
             .image(
               window.innerWidth - 20,
@@ -183,7 +227,11 @@ const useConfig = () => {
             .setOffset(0, -capsula.height / 2);
 
           this.muchacho = this.physics.add
-            .sprite(200, window.innerHeight - 10, "muchacho")
+            .sprite(
+              alfombra.x + alfombra.x / 2,
+              alfombra.y + alfombra.y / 2,
+              "muchacho"
+            )
             .setScale(3.3)
             .setOrigin(1, 1);
 
@@ -191,7 +239,7 @@ const useConfig = () => {
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
             .setOrigin(1, 1)
             .setDepth(10000);
-          const audio2 = this.add
+          this.add
             .image(
               window.innerWidth / 2 + audio1.width,
               window.innerHeight,
@@ -203,7 +251,7 @@ const useConfig = () => {
             .image(window.innerWidth / 2.5, window.innerHeight, "planta1")
             .setOrigin(1, 1)
             .setDepth(10000);
-          const planta2 = this.add
+          this.add
             .image(
               window.innerWidth / 2.5 - planta1.width,
               window.innerHeight,
@@ -213,14 +261,14 @@ const useConfig = () => {
             .setDepth(10000);
 
           this.cursor = this.input.keyboard?.createCursorKeys();
-          this.physics.add.collider(this.muchacho, bordeIzquierdo);
-          this.physics.add.collider(this.muchacho, bordeDerecho);
-          this.physics.add.collider(this.muchacho, this.escritorio2);
-          this.physics.add.collider(this.muchacho, this.escritorio3);
-          this.physics.add.collider(this.muchacho, this.escritorio4);
           this.physics.add.collider(this.muchacho, capsula);
           this.physics.add.collider(this.muchacho, telefono);
           this.physics.add.collider(this.muchacho, arcade);
+          this.physics.add.collider(this.muchacho, pared);
+          this.physics.add.collider(this.muchacho, nevera);
+          this.physics.add.collider(this.muchacho, maquina);
+          this.physics.add.collider(this.muchacho, sofaUno);
+          this.physics.add.collider(this.muchacho, sofaDos);
           this.muchacho.setCollideWorldBounds(true);
 
           this.anims.create({
@@ -289,7 +337,7 @@ const useConfig = () => {
 
           this.muchacho.anims.play("idle");
 
-          const debugGraphics = this.add.graphics().setAlpha(0.75);
+          this.add.graphics().setAlpha(0.75);
           this.physics.world.createDebugGraphic();
         }
 
