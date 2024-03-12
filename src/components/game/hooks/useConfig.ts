@@ -11,11 +11,11 @@ const useConfig = () => {
     if (typeof window !== "undefined" && gameRef.current) {
       class CustomPhaserScene extends Phaser.Scene {
         muchacho?: Phaser.Physics.Arcade.Sprite | null;
-        escritorio1?: Phaser.GameObjects.Image | null;
+        escritorio1?: Phaser.Physics.Arcade.Image | null;
         escritorio2?: Phaser.GameObjects.Image | null;
         escritorio3?: Phaser.GameObjects.Image | null;
-        escritorio4?: Phaser.GameObjects.Image | null;
-        panelDeControl: Phaser.GameObjects.Image | null;
+        escritorio4?: Phaser.Physics.Arcade.Image | null;
+        panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
 
         constructor() {
@@ -137,7 +137,7 @@ const useConfig = () => {
             .setScale(1.1);
           nevera.scaleX = 1.4;
           nevera.body
-            .setSize(nevera.width * 2, nevera.height *1.1, false)
+            .setSize(nevera.width * 2, nevera.height * 1.1, false)
             .setOffset(0, 0);
           const maquina = this.physics.add
             .staticImage(
@@ -170,21 +170,29 @@ const useConfig = () => {
           sofaDos.body
             .setSize(sofaUno.width, sofaUno.height, false)
             .setOffset(sofaUno.width / 2.4, -sofaUno.height / 1.3);
-          this.panelDeControl = this.add
-            .image(
+          this.panelDeControl = this.physics.add
+            .staticImage(
               window.innerWidth,
               window.innerHeight / 1.1,
               "panelDeControl"
             )
             .setOrigin(1, 1);
 
-          this.escritorio1 = this.add
+          this.escritorio1 = this.physics.add
             .image(
               window.innerWidth - 20,
               window.innerHeight / 2.2,
               "escritorio1"
             )
-            .setOrigin(1, 1);
+            .setOrigin(1, 1)
+            .setImmovable();
+          this.escritorio1.body
+            ?.setSize(
+              this.escritorio1.width,
+              this.escritorio1.height / 3,
+              false
+            )
+            .setOffset(0, this.escritorio1.height / 2);
           this.escritorio2 = this.add
             .image(
               window.innerWidth - 20,
@@ -192,6 +200,16 @@ const useConfig = () => {
               "escritorio2"
             )
             .setOrigin(1, 1);
+          // this.escritorio2.body
+          //   ?.setSize(
+          //     this.escritorio2.width,
+          //     this.escritorio2.height / 3,
+          //     false
+          //   )
+          //   .setOffset(
+          //     -this.escritorio2.width / 2,
+          //     -this.escritorio2.height / 3
+          //   );
           this.escritorio3 = this.add
             .image(
               window.innerWidth - (this.escritorio1.width + 20),
@@ -199,13 +217,40 @@ const useConfig = () => {
               "escritorio3"
             )
             .setOrigin(1, 1);
-          this.escritorio4 = this.add
-            .image(
+          // this.escritorio3.body
+          //   ?.setSize(
+          //     this.escritorio3.width,
+          //     this.escritorio3.height / 3,
+          //     false
+          //   )
+          //   .setOffset(
+          //     -this.escritorio3.width / 2,
+          //     -this.escritorio3.height / 3
+          //   );
+          this.escritorio4 = this.physics.add
+            .staticImage(
               window.innerWidth - (this.escritorio2.width + 20),
               window.innerHeight / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
+          this.escritorio4.body
+            ?.setSize(this.escritorio4.width, this.escritorio4.height, false)
+            .setOffset(
+              -this.escritorio4.width / 2,
+              -this.escritorio4.height / 2
+            );
+          // this.escritorio4.body
+          //   ?.setSize(
+          //     this.escritorio4.width,
+          //     this.escritorio4.height / 3,
+          //     false
+          //   )
+          //   .setOffset(
+          //     -this.escritorio4.width / 2,
+          //     -this.escritorio4.height / 3
+          //   );
+
           const arcade = this.physics.add
             .staticImage(window.innerWidth, window.innerHeight, "arcade")
             .setOrigin(1, 1)
@@ -231,9 +276,7 @@ const useConfig = () => {
               alfombra.y + alfombra.y / 2,
               "muchacho"
             )
-            .setScale(3.3)
-            // .setOrigin(0)
-            // .setOffset(0.5, 0.5);
+            .setScale(3.3);
 
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
@@ -269,7 +312,9 @@ const useConfig = () => {
           this.physics.add.collider(this.muchacho, maquina);
           this.physics.add.collider(this.muchacho, sofaUno);
           this.physics.add.collider(this.muchacho, sofaDos);
+          // this.physics.add.collider(this.muchacho, this.escritorio1);
           this.muchacho.setCollideWorldBounds(true);
+
           this.anims.create({
             key: "arriba",
             frames: this.anims.generateFrameNumbers("muchacho", {
@@ -311,22 +356,58 @@ const useConfig = () => {
         }
 
         update() {
-          if (this.cursor?.left.isDown) {
+          const fueraDeZonaRestringidaX =
+            Number(this.muchacho?.y) <=
+              Number(this?.escritorio4?.y) -
+                Number(this.escritorio4?.height) -
+                20 ||
+            Number(this?.muchacho?.y) >= Number(this.escritorio4?.y) + 20 ||
+            (Number(this.muchacho?.y) >
+              Number(this?.escritorio4?.y) -
+                Number(this.escritorio4?.height) -
+                20 &&
+              Number(this?.muchacho?.y) < Number(this.escritorio4?.y) + 20 &&
+              Number(this.muchacho?.x) <=
+                Number(this.escritorio4?.x) -
+                  10 -
+                  Number(this.escritorio4?.width) / 2) ||
+            Number(this.muchacho?.x) >=
+              Number(this.escritorio4?.x) +
+                40 -
+                Number(this.escritorio4?.width) / 2;
+
+          const fueraDeZonaRestringidaY =
+            Number(this.muchacho?.x) <=
+              Number(this?.escritorio4?.x) -
+                Number(this.escritorio4?.width) -
+                20 ||
+            Number(this?.muchacho?.x) >= Number(this.escritorio4?.x) + 20 ||
+            (Number(this.muchacho?.x) >
+              Number(this?.escritorio4?.x) -
+                Number(this.escritorio4?.width) -
+                20 &&
+              Number(this?.muchacho?.x) < Number(this.escritorio4?.x) + 20 &&
+              Number(this.muchacho?.y) <=
+                Number(this.escritorio4?.y) -
+                  10 -
+                  Number(this.escritorio4?.height) / 2) ||
+            Number(this.muchacho?.y) >=
+              Number(this.escritorio4?.y) +
+                40 -
+                Number(this.escritorio4?.height) / 2;
+
+          if (this.cursor?.left.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(-160);
-            this.muchacho?.anims.play("left", true);
-          } else if (this.cursor?.right.isDown) {
+          } else if (this.cursor?.right.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(160);
-            this.muchacho?.anims.play("right", true);
           } else {
             this.muchacho?.setVelocityX(0);
           }
 
-          if (this.cursor?.up.isDown) {
+          if (this.cursor?.up.isDown && fueraDeZonaRestringidaX) {
             this.muchacho?.setVelocityY(-160);
-            this.muchacho?.anims.play("up", true);
-          } else if (this.cursor?.down.isDown) {
+          } else if (this.cursor?.down.isDown && fueraDeZonaRestringidaX) {
             this.muchacho?.setVelocityY(160);
-            this.muchacho?.anims.play("down", true);
           } else {
             this.muchacho?.setVelocityY(0);
           }
@@ -358,7 +439,7 @@ const useConfig = () => {
           default: "arcade",
           arcade: {
             gravity: { y: 0, x: 0 },
-            // debug: true,
+            debug: true,
           },
         },
         scene: [CustomPhaserScene],
