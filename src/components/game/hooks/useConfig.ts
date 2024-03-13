@@ -108,13 +108,13 @@ const useConfig = () => {
           );
           this.load.spritesheet(
             "muchacho",
-            `${INFURA_GATEWAY}/ipfs/QmceXoKkssCdiex6UJKeFBERx7CrxZrDKHVHgcWoJhBdE5`,
+            `${INFURA_GATEWAY}/ipfs/QmUHDrL3JTUMwztqyzr8cUdCjYLpjET9pRXrLTRPtfgSBx`,
             {
-              frameWidth: 33.45,
-              frameHeight: 61.2,
+              frameWidth: 600,
+              frameHeight: 600,
               margin: 0,
               startFrame: 0,
-              endFrame: 35,
+              endFrame: 143,
             }
           );
         }
@@ -129,7 +129,7 @@ const useConfig = () => {
             .setScale(1.1);
           pared.scaleX = 1.3;
           pared.body
-            .setSize(pared.width, pared.height / 1.2, false)
+            .setSize(pared.width, pared.height / 1.5, false)
             .setOffset(-0.5, 0);
           const nevera = this.physics.add
             .staticImage(0, 0, "nevera")
@@ -137,7 +137,7 @@ const useConfig = () => {
             .setScale(1.1);
           nevera.scaleX = 1.4;
           nevera.body
-            .setSize(nevera.width * 2, nevera.height * 1.1, false)
+            .setSize(nevera.width * 2, nevera.height * 0.8, false)
             .setOffset(0, 0);
           const maquina = this.physics.add
             .staticImage(
@@ -149,27 +149,23 @@ const useConfig = () => {
             .setScale(1.1);
           maquina.scaleX = 1.6;
           maquina.body
-            .setSize(maquina.width, maquina.height / 2, false)
-            .setOffset(maquina.width, maquina.height / 2);
+            .setSize(maquina.width, maquina.height / 3, false)
+            .setOffset(maquina.width, maquina.height / 5);
           const alfombra = this.add
             .image(fondo.width / 4, fondo.height / 2, "alfombra")
             .setOrigin(0, 0)
             .setScale(1.2);
           alfombra.scaleX = 1.5;
-          const sofaUno = this.physics.add
-            .staticImage(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
+          const sofaUno = this.add
+            .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
             .setOrigin(0, 0)
             .setScale(1.2);
-          sofaUno.body
-            .setSize(sofaUno.width, sofaUno.height, false)
-            .setOffset(sofaUno.width / 2.4, -sofaUno.height / 1.3);
-          const sofaDos = this.physics.add
-            .staticImage(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
+
+          const sofaDos = this.add
+            .image(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
             .setOrigin(0, 0)
             .setScale(1.2);
-          sofaDos.body
-            .setSize(sofaUno.width, sofaUno.height, false)
-            .setOffset(sofaUno.width / 2.4, -sofaUno.height / 1.3);
+
           this.panelDeControl = this.physics.add
             .staticImage(
               window.innerWidth,
@@ -276,7 +272,7 @@ const useConfig = () => {
               alfombra.y + alfombra.y / 2,
               "muchacho"
             )
-            .setScale(3.3);
+            .setScale(0.5);
 
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
@@ -316,43 +312,52 @@ const useConfig = () => {
           this.muchacho.setCollideWorldBounds(true);
 
           this.anims.create({
+            key: "inactivo",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 132,
+              end: 143,
+            }),
+            frameRate: 0.3,
+            repeat: -1,
+          });
+          this.anims.create({
             key: "arriba",
             frames: this.anims.generateFrameNumbers("muchacho", {
               start: 0,
-              end: 8,
+              end: 11,
             }),
-            frameRate: 5,
+            frameRate: 3,
             repeat: -1,
           });
           this.anims.create({
             key: "izquierda",
             frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 9,
-              end: 17,
+              start: 24,
+              end: 35,
             }),
-            frameRate: 5,
+            frameRate: 3,
             repeat: -1,
           });
           this.anims.create({
             key: "abajo",
             frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 18,
-              end: 26,
+              start: 12,
+              end: 23,
             }),
-            frameRate: 5,
+            frameRate: 3,
             repeat: -1,
           });
           this.anims.create({
             key: "derecha",
             frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 27,
-              end: 35,
+              start: 36,
+              end: 47,
             }),
-            frameRate: 5,
+            frameRate: 3,
             repeat: -1,
           });
 
-          this.muchacho.anims.play("inactivo");
+          this.muchacho.anims.play("inactivo", true);
         }
 
         update() {
@@ -398,16 +403,20 @@ const useConfig = () => {
 
           if (this.cursor?.left.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(-160);
+            this.muchacho?.anims.play("izquierda", true);
           } else if (this.cursor?.right.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(160);
+            this.muchacho?.anims.play("derecha", true);
           } else {
             this.muchacho?.setVelocityX(0);
           }
 
           if (this.cursor?.up.isDown && fueraDeZonaRestringidaX) {
             this.muchacho?.setVelocityY(-160);
+            this.muchacho?.anims.play("arriba", true);
           } else if (this.cursor?.down.isDown && fueraDeZonaRestringidaX) {
             this.muchacho?.setVelocityY(160);
+            this.muchacho?.anims.play("abajo", true);
           } else {
             this.muchacho?.setVelocityY(0);
           }
@@ -418,7 +427,7 @@ const useConfig = () => {
             !this.cursor?.up.isDown &&
             !this.cursor?.down.isDown
           ) {
-            this.muchacho?.anims.play("idle");
+            this.muchacho?.anims.play("inactivo", true);
           }
 
           this.muchacho!.depth = (this.muchacho!?.y +
