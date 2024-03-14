@@ -356,6 +356,42 @@ const useConfig = () => {
             frameRate: 3,
             repeat: -1,
           });
+          this.anims.create({
+            key: "izquierdaABajo",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 72,
+              end: 83,
+            }),
+            frameRate: 3,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "izquierdaArriba",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 48,
+              end: 59,
+            }),
+            frameRate: 3,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "derechaArriba",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 60,
+              end: 71,
+            }),
+            frameRate: 3,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "derechaAbajo",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 84,
+              end: 95,
+            }),
+            frameRate: 3,
+            repeat: -1,
+          });
 
           this.muchacho.anims.play("inactivo", true);
         }
@@ -401,17 +437,29 @@ const useConfig = () => {
                 40 -
                 Number(this.escritorio4?.height) / 2;
 
-          if (this.cursor?.left.isDown && fueraDeZonaRestringidaY) {
+          if (this.cursor?.left.isDown && this.cursor?.down?.isDown) {
+            this.muchacho?.setVelocityX(-160);
+            this.muchacho?.setVelocityY(160);
+            this.muchacho?.anims.play("izquierdaABajo", true);
+          } else if (this.cursor?.left.isDown && this.cursor?.up?.isDown) {
+            this.muchacho?.setVelocityX(-160);
+            this.muchacho?.setVelocityY(-160);
+            this.muchacho?.anims.play("izquierdaArriba", true);
+          } else if (this.cursor?.right.isDown && this.cursor?.down?.isDown) {
+            this.muchacho?.setVelocityX(160);
+            this.muchacho?.setVelocityY(160);
+            this.muchacho?.anims.play("derechaAbajo", true);
+          } else if (this.cursor?.right.isDown && this.cursor?.up?.isDown) {
+            this.muchacho?.setVelocityX(160);
+            this.muchacho?.setVelocityY(-160);
+            this.muchacho?.anims.play("derechaArriba", true);
+          } else if (this.cursor?.left.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(-160);
             this.muchacho?.anims.play("izquierda", true);
           } else if (this.cursor?.right.isDown && fueraDeZonaRestringidaY) {
             this.muchacho?.setVelocityX(160);
             this.muchacho?.anims.play("derecha", true);
-          } else {
-            this.muchacho?.setVelocityX(0);
-          }
-
-          if (this.cursor?.up.isDown && fueraDeZonaRestringidaX) {
+          } else if (this.cursor?.up.isDown && fueraDeZonaRestringidaX) {
             this.muchacho?.setVelocityY(-160);
             this.muchacho?.anims.play("arriba", true);
           } else if (this.cursor?.down.isDown && fueraDeZonaRestringidaX) {
@@ -419,6 +467,7 @@ const useConfig = () => {
             this.muchacho?.anims.play("abajo", true);
           } else {
             this.muchacho?.setVelocityY(0);
+            this.muchacho?.setVelocityX(0);
           }
 
           if (
@@ -431,7 +480,7 @@ const useConfig = () => {
           }
 
           this.muchacho!.depth = (this.muchacho!?.y +
-            this.muchacho!?.height / 2) as number;
+            this.muchacho!?.height / 4) as number;
           this.escritorio1!.depth = this.escritorio1?.y as number;
           this.escritorio2!.depth = this.escritorio2?.y as number;
           this.escritorio3!.depth = this.escritorio3?.y as number;
