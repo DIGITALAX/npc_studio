@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
+import { Direcion } from "../types/game.types";
 
 const useConfig = () => {
   const gameRef = useRef<HTMLElement | undefined>(null);
@@ -11,10 +12,10 @@ const useConfig = () => {
     if (typeof window !== "undefined" && gameRef.current) {
       class CustomPhaserScene extends Phaser.Scene {
         muchacho?: Phaser.Physics.Arcade.Sprite | null;
-        escritorio1?: Phaser.Physics.Arcade.Image | null;
+        escritorio1?: Phaser.GameObjects.Image | null;
         escritorio2?: Phaser.GameObjects.Image | null;
         escritorio3?: Phaser.GameObjects.Image | null;
-        escritorio4?: Phaser.Physics.Arcade.Image | null;
+        escritorio4?: Phaser.GameObjects.Image | null;
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
 
@@ -166,29 +167,22 @@ const useConfig = () => {
             .setOrigin(0, 0)
             .setScale(1.2);
 
-          this.panelDeControl = this.physics.add
-            .staticImage(
+          this.panelDeControl = this.add
+            .image(
               window.innerWidth,
               window.innerHeight / 1.1,
               "panelDeControl"
             )
             .setOrigin(1, 1);
 
-          this.escritorio1 = this.physics.add
+          this.escritorio1 = this.add
             .image(
               window.innerWidth - 20,
               window.innerHeight / 2.2,
               "escritorio1"
             )
-            .setOrigin(1, 1)
-            .setImmovable();
-          this.escritorio1.body
-            ?.setSize(
-              this.escritorio1.width,
-              this.escritorio1.height / 3,
-              false
-            )
-            .setOffset(0, this.escritorio1.height / 2);
+            .setOrigin(1, 1);
+
           this.escritorio2 = this.add
             .image(
               window.innerWidth - 20,
@@ -196,16 +190,6 @@ const useConfig = () => {
               "escritorio2"
             )
             .setOrigin(1, 1);
-          // this.escritorio2.body
-          //   ?.setSize(
-          //     this.escritorio2.width,
-          //     this.escritorio2.height / 3,
-          //     false
-          //   )
-          //   .setOffset(
-          //     -this.escritorio2.width / 2,
-          //     -this.escritorio2.height / 3
-          //   );
           this.escritorio3 = this.add
             .image(
               window.innerWidth - (this.escritorio1.width + 20),
@@ -213,39 +197,13 @@ const useConfig = () => {
               "escritorio3"
             )
             .setOrigin(1, 1);
-          // this.escritorio3.body
-          //   ?.setSize(
-          //     this.escritorio3.width,
-          //     this.escritorio3.height / 3,
-          //     false
-          //   )
-          //   .setOffset(
-          //     -this.escritorio3.width / 2,
-          //     -this.escritorio3.height / 3
-          //   );
-          this.escritorio4 = this.physics.add
-            .staticImage(
+          this.escritorio4 = this.add
+            .image(
               window.innerWidth - (this.escritorio2.width + 20),
               window.innerHeight / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
-          this.escritorio4.body
-            ?.setSize(this.escritorio4.width, this.escritorio4.height, false)
-            .setOffset(
-              -this.escritorio4.width / 2,
-              -this.escritorio4.height / 2
-            );
-          // this.escritorio4.body
-          //   ?.setSize(
-          //     this.escritorio4.width,
-          //     this.escritorio4.height / 3,
-          //     false
-          //   )
-          //   .setOffset(
-          //     -this.escritorio4.width / 2,
-          //     -this.escritorio4.height / 3
-          //   );
 
           const arcade = this.physics.add
             .staticImage(window.innerWidth, window.innerHeight, "arcade")
@@ -308,7 +266,6 @@ const useConfig = () => {
           this.physics.add.collider(this.muchacho, maquina);
           this.physics.add.collider(this.muchacho, sofaUno);
           this.physics.add.collider(this.muchacho, sofaDos);
-          // this.physics.add.collider(this.muchacho, this.escritorio1);
           this.muchacho.setCollideWorldBounds(true);
 
           this.anims.create({
@@ -357,7 +314,7 @@ const useConfig = () => {
             repeat: -1,
           });
           this.anims.create({
-            key: "izquierdaABajo",
+            key: "izquierdaAbajo",
             frames: this.anims.generateFrameNumbers("muchacho", {
               start: 72,
               end: 83,
@@ -397,72 +354,64 @@ const useConfig = () => {
         }
 
         update() {
-          const fueraDeZonaRestringidaX =
-            Number(this.muchacho?.y) <=
-              Number(this?.escritorio4?.y) -
-                Number(this.escritorio4?.height) -
-                20 ||
-            Number(this?.muchacho?.y) >= Number(this.escritorio4?.y) + 20 ||
-            (Number(this.muchacho?.y) >
-              Number(this?.escritorio4?.y) -
-                Number(this.escritorio4?.height) -
-                20 &&
-              Number(this?.muchacho?.y) < Number(this.escritorio4?.y) + 20 &&
-              Number(this.muchacho?.x) <=
-                Number(this.escritorio4?.x) -
-                  10 -
-                  Number(this.escritorio4?.width) / 2) ||
-            Number(this.muchacho?.x) >=
-              Number(this.escritorio4?.x) +
-                40 -
-                Number(this.escritorio4?.width) / 2;
-
-          const fueraDeZonaRestringidaY =
-            Number(this.muchacho?.x) <=
-              Number(this?.escritorio4?.x) -
-                Number(this.escritorio4?.width) -
-                20 ||
-            Number(this?.muchacho?.x) >= Number(this.escritorio4?.x) + 20 ||
-            (Number(this.muchacho?.x) >
-              Number(this?.escritorio4?.x) -
-                Number(this.escritorio4?.width) -
-                20 &&
-              Number(this?.muchacho?.x) < Number(this.escritorio4?.x) + 20 &&
-              Number(this.muchacho?.y) <=
-                Number(this.escritorio4?.y) -
-                  10 -
-                  Number(this.escritorio4?.height) / 2) ||
-            Number(this.muchacho?.y) >=
-              Number(this.escritorio4?.y) +
-                40 -
-                Number(this.escritorio4?.height) / 2;
-
-          if (this.cursor?.left.isDown && this.cursor?.down?.isDown) {
+          if (
+            this.cursor?.left.isDown &&
+            this.cursor?.down?.isDown &&
+            this.bloqueoDinamico(Direcion.Izquierda) &&
+            this.bloqueoDinamico(Direcion.Abajo)
+          ) {
             this.muchacho?.setVelocityX(-160);
             this.muchacho?.setVelocityY(160);
-            this.muchacho?.anims.play("izquierdaABajo", true);
-          } else if (this.cursor?.left.isDown && this.cursor?.up?.isDown) {
+            this.muchacho?.anims.play("izquierdaAbajo", true);
+          } else if (
+            this.cursor?.left.isDown &&
+            this.cursor?.up?.isDown &&
+            this.bloqueoDinamico(Direcion.Izquierda) &&
+            this.bloqueoDinamico(Direcion.Arriba)
+          ) {
             this.muchacho?.setVelocityX(-160);
             this.muchacho?.setVelocityY(-160);
             this.muchacho?.anims.play("izquierdaArriba", true);
-          } else if (this.cursor?.right.isDown && this.cursor?.down?.isDown) {
+          } else if (
+            this.cursor?.right.isDown &&
+            this.cursor?.down?.isDown &&
+            this.bloqueoDinamico(Direcion.Abajo) &&
+            this.bloqueoDinamico(Direcion.Derecha)
+          ) {
             this.muchacho?.setVelocityX(160);
             this.muchacho?.setVelocityY(160);
             this.muchacho?.anims.play("derechaAbajo", true);
-          } else if (this.cursor?.right.isDown && this.cursor?.up?.isDown) {
+          } else if (
+            this.cursor?.right.isDown &&
+            this.cursor?.up?.isDown &&
+            this.bloqueoDinamico(Direcion.Arriba) &&
+            this.bloqueoDinamico(Direcion.Derecha)
+          ) {
             this.muchacho?.setVelocityX(160);
             this.muchacho?.setVelocityY(-160);
             this.muchacho?.anims.play("derechaArriba", true);
-          } else if (this.cursor?.left.isDown && fueraDeZonaRestringidaY) {
+          } else if (
+            this.cursor?.left.isDown &&
+            this.bloqueoDinamico(Direcion.Izquierda)
+          ) {
             this.muchacho?.setVelocityX(-160);
             this.muchacho?.anims.play("izquierda", true);
-          } else if (this.cursor?.right.isDown && fueraDeZonaRestringidaY) {
+          } else if (
+            this.cursor?.right.isDown &&
+            this.bloqueoDinamico(Direcion.Derecha)
+          ) {
             this.muchacho?.setVelocityX(160);
             this.muchacho?.anims.play("derecha", true);
-          } else if (this.cursor?.up.isDown && fueraDeZonaRestringidaX) {
+          } else if (
+            this.cursor?.up.isDown &&
+            this.bloqueoDinamico(Direcion.Arriba)
+          ) {
             this.muchacho?.setVelocityY(-160);
             this.muchacho?.anims.play("arriba", true);
-          } else if (this.cursor?.down.isDown && fueraDeZonaRestringidaX) {
+          } else if (
+            this.cursor?.down.isDown &&
+            this.bloqueoDinamico(Direcion.Abajo)
+          ) {
             this.muchacho?.setVelocityY(160);
             this.muchacho?.anims.play("abajo", true);
           } else {
@@ -486,6 +435,72 @@ const useConfig = () => {
           this.escritorio3!.depth = this.escritorio3?.y as number;
           this.escritorio4!.depth = this.escritorio4?.y as number;
           this.panelDeControl!.depth = this.panelDeControl?.y as number;
+        }
+
+        bloqueoDinamico(direcion: Direcion): boolean {
+          const numeroUmbral = 20;
+          const bloqueos = [
+            this.escritorio1,
+            this.escritorio2,
+            this.escritorio3,
+            this.escritorio4,
+            this.panelDeControl,
+          ];
+
+          const esBloqueado = bloqueos.some(
+            (item: Phaser.GameObjects.Image | null | undefined) => {
+              const escritorio4Y =
+                this.muchacho!?.y > item!?.y - item!?.height - numeroUmbral &&
+                this.muchacho!?.y < item!?.y - item!?.height + numeroUmbral;
+              const escritorio4DerechoX =
+                this.muchacho!?.x >= item!?.x - item!?.width - numeroUmbral &&
+                this.muchacho!?.x <= item!?.x - item!?.width + numeroUmbral;
+              const escritorio4IzquierdoX =
+                this.muchacho!?.x <= item!?.x + numeroUmbral &&
+                this.muchacho!?.x >= item!?.x - numeroUmbral;
+
+              const escritorio4X =
+                this.muchacho!?.x > item!?.x - item!?.width - numeroUmbral &&
+                this.muchacho!?.y < item!?.x - item!?.width + numeroUmbral;
+
+              const escritorio4AbajoY =
+                this.muchacho!?.y >= item!?.y - item!?.height - numeroUmbral &&
+                this.muchacho!?.y <= item!?.y - item!?.height + numeroUmbral;
+              const escritorio4ArribaY =
+                this.muchacho!?.y <=
+                  item!?.y - item!?.height / 1.5 + numeroUmbral &&
+                this.muchacho!?.y >=
+                  item!?.y - item!?.height / 1.5 - numeroUmbral;
+
+              if (direcion == Direcion.Izquierda) {
+                if (escritorio4Y && escritorio4IzquierdoX) {
+                  return true;
+                }
+              } else if (direcion == Direcion.Derecha) {
+                if (escritorio4Y && escritorio4DerechoX) {
+                  return true;
+                }
+              } else if (direcion == Direcion.Arriba) {
+                console.log(
+                  escritorio4X,
+                  escritorio4ArribaY,
+                  this.muchacho?.y,
+                  item!?.y
+                );
+                if (escritorio4X && escritorio4ArribaY) {
+                  return true;
+                }
+              } else if (direcion == Direcion.Abajo) {
+                if (escritorio4X && escritorio4AbajoY) {
+                  return true;
+                }
+              }
+
+              return false;
+            }
+          );
+
+          return !esBloqueado;
         }
       }
 
