@@ -10,6 +10,8 @@ const useConfig = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && gameRef.current) {
+      const parentWidth = gameRef.current.clientWidth;
+      const parentHeight = gameRef.current.clientHeight;
       class CustomPhaserScene extends Phaser.Scene {
         muchacho?: Phaser.Physics.Arcade.Sprite | null;
         escritorio1?: Phaser.GameObjects.Image | null;
@@ -122,8 +124,8 @@ const useConfig = () => {
 
         create() {
           const fondo = this.add.image(0, 0, "fondo").setOrigin(0, 0);
-          fondo.displayWidth = window.innerWidth;
-          fondo.displayHeight = window.innerHeight;
+          fondo.displayWidth = parentWidth;
+          fondo.displayHeight = parentHeight;
           const pared = this.physics.add
             .staticImage(fondo.width, 0, "pared")
             .setOrigin(0.62, 0)
@@ -506,8 +508,8 @@ const useConfig = () => {
 
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
-        width: window.innerWidth,
-        height: window.innerHeight,
+        width: parentWidth,
+        height: parentHeight,
         physics: {
           default: "arcade",
           arcade: {

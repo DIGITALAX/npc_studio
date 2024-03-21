@@ -12,6 +12,9 @@ const config: Config = {
       backgroundColor: {
         frio: "#1100ff",
       },
+      colors: {
+        cielo: "#2E91D4",
+      },
       fontFamily: {
         rain: "Internal Rainbows",
         mana: "Manaspace",

@@ -8,7 +8,7 @@ function Studio() {
   return (
     <div
       ref={gameRef as RefObject<HTMLDivElement>}
-      className="relative w-full h-full flex"
+      className="relative w-full h-full flex items-start justify-start"
     />
   );
 }

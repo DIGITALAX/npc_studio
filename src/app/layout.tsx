@@ -1,6 +1,7 @@
 import Head from "next/head";
 import "./globals.css";
 import type { Metadata } from "next";
+import Footer from "@/components/layout/modules/Footer";
 
 export const metadata: Metadata = {
   title: "NPC Studio",
@@ -33,6 +34,12 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <style
+        style={{
+          height: "100%",
+          minHeight: "100vh",
+          display: "flex"
+
+        }}
           dangerouslySetInnerHTML={{
             __html: `
                 @font-face {
@@ -50,8 +57,8 @@ export default function RootLayout({
           }}
         />
       </Head>
-
-      <body>{children}</body>
+      <body className="relative w-full h-full flex">{children}</body>
+      <Footer />
     </html>
   );
 }
