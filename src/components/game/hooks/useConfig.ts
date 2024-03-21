@@ -439,7 +439,7 @@ const useConfig = () => {
           this.escritorio4!.depth = this.escritorio4?.y as number;
           this.panelDeControl!.depth = this.panelDeControl?.y as number;
 
-          if (this.frameCount % 10 === 0) {
+          if (this.frameCount % 10 === 0) { 
             this.game.renderer.snapshot((snapshot: any) => {
               const mapaDiv = document.getElementById("mapa");
 
