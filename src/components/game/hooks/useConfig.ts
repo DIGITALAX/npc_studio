@@ -10,7 +10,6 @@ const useConfig = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && gameRef.current) {
-      const parentWidth = gameRef.current.clientWidth;
       const parentHeight = gameRef.current.clientHeight;
       class CustomPhaserScene extends Phaser.Scene {
         muchacho?: Phaser.Physics.Arcade.Sprite | null;
@@ -20,6 +19,7 @@ const useConfig = () => {
         escritorio4?: Phaser.GameObjects.Image | null;
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
+        frameCount: number = 0;
 
         constructor() {
           super();
@@ -234,7 +234,6 @@ const useConfig = () => {
             )
             .setScale(0.5);
           this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
-
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
             .setOrigin(1, 1)
@@ -355,8 +354,6 @@ const useConfig = () => {
             frameRate: 3,
             repeat: -1,
           });
-
-          this.muchacho.anims.play("inactivo", true);
         }
 
         update() {
@@ -441,6 +438,18 @@ const useConfig = () => {
           this.escritorio3!.depth = this.escritorio3?.y as number;
           this.escritorio4!.depth = this.escritorio4?.y as number;
           this.panelDeControl!.depth = this.panelDeControl?.y as number;
+
+          if (this.frameCount % 10 === 0) {
+            this.game.renderer.snapshot((snapshot: any) => {
+              const mapaDiv = document.getElementById("mapa");
+              if (mapaDiv?.firstChild) {
+                mapaDiv.replaceChild(snapshot, mapaDiv.firstChild);
+              } else {
+                mapaDiv?.appendChild(snapshot);
+              }
+            });
+          }
+          this.frameCount++;
         }
 
         bloqueoDinamico(direcion: Direcion): boolean {
@@ -506,7 +515,7 @@ const useConfig = () => {
 
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
-        width: parentWidth,
+        width: 1512,
         height: parentHeight,
         physics: {
           default: "arcade",
