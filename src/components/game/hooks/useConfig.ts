@@ -442,11 +442,13 @@ const useConfig = () => {
           if (this.frameCount % 10 === 0) {
             this.game.renderer.snapshot((snapshot: any) => {
               const mapaDiv = document.getElementById("mapa");
+
               if (mapaDiv?.firstChild) {
                 mapaDiv.replaceChild(snapshot, mapaDiv.firstChild);
               } else {
                 mapaDiv?.appendChild(snapshot);
               }
+              snapshot.draggable = false;
             });
           }
           this.frameCount++;

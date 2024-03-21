@@ -37,7 +37,11 @@ function Log() {
           </div>
         </div>
         <div className="relative w-full h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">
-          <div id="mapa" className="relative w-full h-full rounded-md flex"></div>
+          <div
+            id="mapa"
+            className="relative w-full h-full rounded-md flex"
+            draggable={false}
+          ></div>
           {/* <Image
             layout="fill"
             src={`${INFURA_GATEWAY}/ipfs/QmX1C1GeujPzenhs1x5Ep6sXPEKSxHjPSF4Qr6xk8D8U7E`}
