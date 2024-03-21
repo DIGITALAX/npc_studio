@@ -14,10 +14,16 @@ const config: Config = {
       },
       colors: {
         cielo: "#2E91D4",
+        ballena: "#7AB3DD",
+        naranja: "#ED5700",
+        frita: "#D76645",
+        viola: "#F700DB"
       },
       fontFamily: {
         rain: "Internal Rainbows",
         mana: "Manaspace",
+        at: "at01",
+        leco: "Leco",
       },
     },
   },

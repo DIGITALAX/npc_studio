@@ -34,12 +34,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <style
-        style={{
-          height: "100%",
-          minHeight: "100vh",
-          display: "flex"
-
-        }}
+          style={{
+            height: "100%",
+            minHeight: "100vh",
+            display: "flex",
+          }}
           dangerouslySetInnerHTML={{
             __html: `
                 @font-face {
@@ -52,6 +51,18 @@ export default function RootLayout({
                   font-family: "Internal Rainbows";
                   font-weight: 400;
                   src: url("https://npcstudio.xyz/fonts/InternalRainbows.ttf");
+                }
+
+                @font-face {
+                  font-family: "at01";
+                  font-weight: 400;
+                  src: url("https://npcstudio.xyz/fonts/at01.ttf");
+                }
+
+                @font-face {
+                  font-family: "Leco";
+                  font-weight: 400;
+                  src: url("https://npcstudio.xyz/fonts/leco.ttf");
                 }
 `,
           }}
