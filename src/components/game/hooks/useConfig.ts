@@ -124,8 +124,8 @@ const useConfig = () => {
 
         create() {
           const fondo = this.add.image(0, 0, "fondo").setOrigin(0, 0);
-          fondo.displayWidth = parentWidth;
-          fondo.displayHeight = parentHeight;
+          fondo.displayWidth = 1512;
+          fondo.displayHeight = 830;
           const pared = this.physics.add
             .staticImage(fondo.width, 0, "pared")
             .setOrigin(0.62, 0)
@@ -233,6 +233,7 @@ const useConfig = () => {
               "muchacho"
             )
             .setScale(0.5);
+          this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
 
           const audio1 = this.add
             .image(window.innerWidth / 2, window.innerHeight, "audio1")
@@ -258,6 +259,9 @@ const useConfig = () => {
             )
             .setOrigin(1, 1)
             .setDepth(10000);
+          this.physics.world.bounds.width = 1512;
+          this.physics.world.bounds.height = 830;
+          this.cameras.main.setBounds(0, 0, 1512, 830);
 
           this.cursor = this.input.keyboard?.createCursorKeys();
           this.physics.add.collider(this.muchacho, capsula);
@@ -483,12 +487,6 @@ const useConfig = () => {
                   return true;
                 }
               } else if (direcion == Direcion.Arriba) {
-                console.log(
-                  escritorio4X,
-                  escritorio4ArribaY,
-                  this.muchacho?.y,
-                  item!?.y
-                );
                 if (escritorio4X && escritorio4ArribaY) {
                   return true;
                 }
