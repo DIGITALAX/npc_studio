@@ -10,7 +10,8 @@ const useConfig = () => {
 
   useEffect(() => {
     if (typeof window !== "undefined" && gameRef.current) {
-      const parentHeight = gameRef.current.clientHeight;
+      const parentWidth = 1512;
+      const parentHeight = 830;
       class CustomPhaserScene extends Phaser.Scene {
         muchacho?: Phaser.Physics.Arcade.Sprite | null;
         escritorio1?: Phaser.GameObjects.Image | null;
@@ -124,8 +125,8 @@ const useConfig = () => {
 
         create() {
           const fondo = this.add.image(0, 0, "fondo").setOrigin(0, 0);
-          fondo.displayWidth = 1512;
-          fondo.displayHeight = 830;
+          fondo.displayWidth = parentWidth;
+          fondo.displayHeight = parentHeight;
           const pared = this.physics.add
             .staticImage(fondo.width, 0, "pared")
             .setOrigin(0.62, 0)
@@ -171,55 +172,65 @@ const useConfig = () => {
 
           this.panelDeControl = this.add
             .image(
-              window.innerWidth,
-              window.innerHeight / 1.1,
+              Number(parentWidth),
+              Number(parentHeight) / 1.1,
               "panelDeControl"
             )
             .setOrigin(1, 1);
 
           this.escritorio1 = this.add
             .image(
-              window.innerWidth - 20,
-              window.innerHeight / 2.2,
+              Number(parentWidth) - 20,
+              Number(parentHeight) / 2.2,
               "escritorio1"
             )
             .setOrigin(1, 1);
 
           this.escritorio2 = this.add
             .image(
-              window.innerWidth - 20,
-              window.innerHeight / 1.6,
+              Number(parentWidth) - 20,
+              Number(parentHeight) / 1.6,
               "escritorio2"
             )
             .setOrigin(1, 1);
           this.escritorio3 = this.add
             .image(
-              window.innerWidth - (this.escritorio1.width + 20),
-              window.innerHeight / 2.2,
+              Number(parentWidth) -
+                (this.escritorio1.width + 20),
+              Number(parentHeight) / 2.2,
               "escritorio3"
             )
             .setOrigin(1, 1);
           this.escritorio4 = this.add
             .image(
-              window.innerWidth - (this.escritorio2.width + 20),
-              window.innerHeight / 1.6,
+              Number(parentWidth) -
+                (this.escritorio2.width + 20),
+              Number(parentHeight) / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
 
           const arcade = this.physics.add
-            .staticImage(window.innerWidth, window.innerHeight, "arcade")
+            .staticImage(
+              Number(parentWidth),
+              Number(parentHeight),
+              "arcade"
+            )
             .setOrigin(1, 1)
             .setDepth(10000);
           const telefono = this.physics.add
-            .staticImage(0, window.innerHeight, "telefono")
+            .staticImage(0, Number(parentHeight), "telefono")
             .setOrigin(0, 1)
             .setDepth(10000);
           telefono.body
             .setSize(telefono.width, telefono.height, false)
             .setOffset(0, -telefono.height / 2);
           const capsula = this.physics.add
-            .staticImage(0, window.innerHeight - telefono.height, "capsula")
+            .staticImage(
+              0,
+              Number(parentHeight) - telefono.height,
+              "capsula"
+            )
             .setOrigin(0, 1)
             .setDepth(10000);
           capsula.body
@@ -235,32 +246,40 @@ const useConfig = () => {
             .setScale(0.5);
           this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
           const audio1 = this.add
-            .image(window.innerWidth / 2, window.innerHeight, "audio1")
+            .image(
+              Number(parentWidth) / 2,
+              Number(parentHeight),
+              "audio1"
+            )
             .setOrigin(1, 1)
             .setDepth(10000);
           this.add
             .image(
-              window.innerWidth / 2 + audio1.width,
-              window.innerHeight,
+              Number(parentWidth) / 2 + audio1.width,
+              Number(parentHeight),
               "audio2"
             )
             .setOrigin(1, 1)
             .setDepth(10000);
           const planta1 = this.add
-            .image(window.innerWidth / 2.5, window.innerHeight, "planta1")
+            .image(
+              Number(parentWidth) / 2.5,
+              Number(parentHeight),
+              "planta1"
+            )
             .setOrigin(1, 1)
             .setDepth(10000);
           this.add
             .image(
-              window.innerWidth / 2.5 - planta1.width,
-              window.innerHeight,
+              Number(parentWidth) / 2.5 - planta1.width,
+              Number(parentHeight),
               "planta2"
             )
             .setOrigin(1, 1)
             .setDepth(10000);
-          this.physics.world.bounds.width = 1512;
-          this.physics.world.bounds.height = 830;
-          this.cameras.main.setBounds(0, 0, 1512, 830);
+          this.physics.world.bounds.width = parentWidth;
+          this.physics.world.bounds.height = parentHeight;
+          this.cameras.main.setBounds(0, 0, parentWidth, parentHeight);
 
           this.cursor = this.input.keyboard?.createCursorKeys();
           this.physics.add.collider(this.muchacho, capsula);
@@ -439,7 +458,7 @@ const useConfig = () => {
           this.escritorio4!.depth = this.escritorio4?.y as number;
           this.panelDeControl!.depth = this.panelDeControl?.y as number;
 
-          if (this.frameCount % 10 === 0) { 
+          if (this.frameCount % 10 === 0) {
             this.game.renderer.snapshot((snapshot: any) => {
               const mapaDiv = document.getElementById("mapa");
 
@@ -449,6 +468,9 @@ const useConfig = () => {
                 mapaDiv?.appendChild(snapshot);
               }
               snapshot.draggable = false;
+              mapaDiv!.style.overflow = "hidden";
+              mapaDiv!.style.width = "100%";
+              mapaDiv!.style.height = "100%";
             });
           }
           this.frameCount++;
@@ -517,8 +539,8 @@ const useConfig = () => {
 
       const config: Phaser.Types.Core.GameConfig = {
         type: Phaser.AUTO,
-        width: 1512,
-        height: parentHeight,
+        width: gameRef.current.clientWidth,
+        height: gameRef.current.clientHeight,
         physics: {
           default: "arcade",
           arcade: {

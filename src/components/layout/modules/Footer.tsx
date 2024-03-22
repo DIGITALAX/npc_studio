@@ -6,7 +6,7 @@ import { INFURA_GATEWAY } from "../../../../lib/constants";
 
 function Footer() {
   return (
-    <div className="relative w-full h-fit py-4 flex items-center justify-between gap-6 flex-row mb-0">
+    <div className="relative w-full h-fit py-4 flex items-center justify-between gap-6 flex-col sm:flex-row mb-0 md:px-0 px-2">
       <div
         className="relative w-fit h-fit flex items-center justify-center ml-0 font-rain text-white text-4xl cursor-pointer active:scale-95"
         onClick={() => window.open("https://www.digitalax.xyz/")}

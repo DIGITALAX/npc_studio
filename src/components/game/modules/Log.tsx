@@ -3,12 +3,12 @@ import { INFURA_GATEWAY } from "../../../../lib/constants";
 
 function Log() {
   return (
-    <div className="relative w-96 h-full flex items-between justify-start flex-col gap-5">
+    <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
       <div className="relative flex flex-col gap-5 h-full w-full items-center justify-start">
         <div className="relative text-white font-leco items-center justify-center flex w-fit h-fit text-4xl">
           NPC STUDIO
         </div>
-        <div className="relative w-full h-40 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-row p-2 gap-4">
+        <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-ballena flex-row p-2 gap-4">
           <div className="relative w-fit h-full flex flex-col items-center justify-between">
             <div className="absolute font-at text-4xl text-white items-center justify-center w-fit h-fit flex whitespace-nowrap text-center leading-5 top-1">
               CHAT <br /> LOG
@@ -36,19 +36,12 @@ function Log() {
             </div>
           </div>
         </div>
-        <div className="relative w-full h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">
+        <div className="relative w-full h-48 xl:h-40 flex items-center justify-center border-4 border-white rounded-md bg-white">
           <div
             id="mapa"
-            className="relative w-full h-full rounded-md flex"
+            className="relative w-full h-full rounded-md flex object-cover bg-cover items-start justify-start"
             draggable={false}
           ></div>
-          {/* <Image
-            layout="fill"
-            src={`${INFURA_GATEWAY}/ipfs/QmX1C1GeujPzenhs1x5Ep6sXPEKSxHjPSF4Qr6xk8D8U7E`}
-            objectFit="cover"
-            className="rounded-md"
-            draggable={false}
-          /> */}
         </div>
       </div>
       <div className="relative w-full h-fit flex items-center justify-center px-4 mb-0">

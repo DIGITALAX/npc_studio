@@ -68,8 +68,10 @@ export default function RootLayout({
           }}
         />
       </Head>
-      <body className="relative w-full h-full flex">{children}</body>
-      <Footer />
+      <body className="relative w-full h-full flex flex-col items-start justify-start md:pt-4 md:px-4">
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

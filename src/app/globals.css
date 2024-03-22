@@ -26,16 +26,18 @@
   src: url("/fonts/leco.ttf");
 }
 
-
 html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  background-color: #1100ff;
+}
+
+body {
   background-image: url("https://thedial.infura-ipfs.io/ipfs/QmchvymSLXmGatbUyLYUvHM3AaEhMiSFooizfmnGRMhPsF");
   margin: 0;
-  padding: 1.5rem;
-  width: 100%;
-  height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
-  background-color: #1100ff;
 }
 
 html::-webkit-scrollbar {
