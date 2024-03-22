@@ -1,7 +1,11 @@
 import Image from "next/legacy/image";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
+import usePush from "../hooks/usePush";
+import { AiOutlineLoading } from "react-icons/ai";
+import { LogProps } from "../types/game.types";
 
-function Log() {
+function Log({ connected, openConnectModal }: LogProps) {
+  const { handleSubscripcion, subscripcionCargando, handleNotify } = usePush();
   return (
     <div className="relative w-full sm:w-3/4 md:w-1/2 xl:w-96 h-fit xl:h-full flex items-between justify-start flex-col gap-5 xl:order-1 order-2 sm:px-0 px-1">
       <div className="relative flex flex-col gap-5 h-full w-full items-center justify-start">
@@ -46,10 +50,26 @@ function Log() {
       </div>
       <div className="relative w-full h-fit flex items-center justify-center px-4 mb-0">
         <div
-          className="relative w-full h-fit flex py-2 px-4 items-center justify-center font-at text-white bg-naranja rounded-md cursor-pointer text-3xl border-4 border-frita active:scale-95 hover:opacity-90"
-          onClick={() => {}}
+          className={`relative w-full h-14 flex py-2 px-4 items-center justify-center font-at text-white bg-naranja rounded-md text-3xl border-4 border-frita  ${
+            !subscripcionCargando && "cursor-pointer hover:opacity-90"
+          }`}
+          onClick={
+            !connected
+              ? openConnectModal
+              : () => !subscripcionCargando && handleNotify()
+          }
         >
-          NOTIFY ME!
+          <div
+            className={`relative w-fit h-fit flex items-center justify-center ${
+              subscripcionCargando && "animate-spin"
+            }`}
+          >
+            {subscripcionCargando ? (
+              <AiOutlineLoading size={15} color="white" />
+            ) : (
+              "NOTIFY ME!"
+            )}
+          </div>
         </div>
       </div>
     </div>

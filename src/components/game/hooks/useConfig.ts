@@ -18,9 +18,14 @@ const useConfig = () => {
         escritorio2?: Phaser.GameObjects.Image | null;
         escritorio3?: Phaser.GameObjects.Image | null;
         escritorio4?: Phaser.GameObjects.Image | null;
+        silla1?: Phaser.GameObjects.Image | null;
+        silla2?: Phaser.GameObjects.Image | null;
+        silla3?: Phaser.GameObjects.Image | null;
+        silla4?: Phaser.GameObjects.Image | null;
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
         frameCount: number = 0;
+        sentado: boolean = false;
 
         constructor() {
           super();
@@ -64,19 +69,35 @@ const useConfig = () => {
           );
           this.load.image(
             "escritorio1",
-            `${INFURA_GATEWAY}/ipfs/QmPN6q9w8aHoBcuZ5dpv8R2NMttGBg1Ep5EViK52s2kqtR`
+            `${INFURA_GATEWAY}/ipfs/QmWtr9iRZ4HiPe1PBxrJfiB9hEQNa3GWxtipt7hqFvBPvs`
+          );
+          this.load.image(
+            "silla1",
+            `${INFURA_GATEWAY}/ipfs/QmariT81Kgxw4mNHCt8wGHmgH5avzrZt2r6vNiik4qeSwK`
           );
           this.load.image(
             "escritorio2",
-            `${INFURA_GATEWAY}/ipfs/QmUXSKNLKgA4z9AKVtzjouSRWBdkWQ6Qktnx6CC1qEYp9m`
+            `${INFURA_GATEWAY}/ipfs/QmTwbtXhizeCxBbZk9Nbd3yrt67kcB7Ytm6sKAzx5rFtCd`
+          );
+          this.load.image(
+            "silla2",
+            `${INFURA_GATEWAY}/ipfs/Qmc8VyBMDALMJJknadELsL9SBQuYSuTHpa3e1SqfX61Egn`
           );
           this.load.image(
             "escritorio3",
-            `${INFURA_GATEWAY}/ipfs/QmdzbavGrq9Ysny1d3jUuZXcQ5WBRL2NQjE6zMZmMd8Vda`
+            `${INFURA_GATEWAY}/ipfs/Qmcy6nTw4YaGj8AEtba2WVm8gYy1vj9LbyMNk9qGptz4ny`
+          );
+          this.load.image(
+            "silla3",
+            `${INFURA_GATEWAY}/ipfs/QmUuHUnrMHhusH1JrgG6WonoCUxG1t7LQe348gru2d4uHM`
           );
           this.load.image(
             "escritorio4",
-            `${INFURA_GATEWAY}/ipfs/QmdDnUZMahnzy1UaS9hLKdGyuXuu1u2cyLEimyPvFUsWoS`
+            `${INFURA_GATEWAY}/ipfs/Qmd8VH1yPkPGtxoRM1bdAvLJnjyTG21pgswddCVnECxDHh`
+          );
+          this.load.image(
+            "silla4",
+            `${INFURA_GATEWAY}/ipfs/QmfZPky9neYWSuQcZ7wtyajqMCRPBaq7WiPjaab4ZxC8PZ`
           );
           this.load.image(
             "panelDeControl",
@@ -164,11 +185,23 @@ const useConfig = () => {
             .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
             .setOrigin(0, 0)
             .setScale(1.2);
+          sofaUno.setInteractive();
+          sofaUno.on("pointerdown", () => {
+            if (this.muchacho) {
+              this.sentado = true;
+            }
+          });
 
           const sofaDos = this.add
             .image(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
             .setOrigin(0, 0)
             .setScale(1.2);
+          sofaDos.setInteractive();
+          sofaDos.on("pointerdown", () => {
+            if (this.muchacho) {
+              this.sentado = true;
+            }
+          });
 
           this.panelDeControl = this.add
             .image(
@@ -185,6 +218,13 @@ const useConfig = () => {
               "escritorio1"
             )
             .setOrigin(1, 1);
+          this.silla1 = this.add
+            .image(
+              Number(this.escritorio1.x) - Number(this.escritorio1.width / 2.5),
+              this.escritorio1.y,
+              "silla1"
+            )
+            .setOrigin(1, 1);
 
           this.escritorio2 = this.add
             .image(
@@ -193,29 +233,46 @@ const useConfig = () => {
               "escritorio2"
             )
             .setOrigin(1, 1);
+          this.silla2 = this.add
+            .image(
+              Number(this.escritorio2.x) - Number(this.escritorio2.width / 2.5),
+              this.escritorio2.y,
+              "silla2"
+            )
+            .setOrigin(1, 1);
+
           this.escritorio3 = this.add
             .image(
-              Number(parentWidth) -
-                (this.escritorio1.width + 20),
+              Number(parentWidth) - (this.escritorio1.width + 20),
               Number(parentHeight) / 2.2,
               "escritorio3"
             )
             .setOrigin(1, 1);
+          this.silla3 = this.add
+            .image(
+              Number(this.escritorio3.x) - Number(this.escritorio3.width / 2.5),
+              this.escritorio3.y,
+              "silla3"
+            )
+            .setOrigin(1, 1);
+
           this.escritorio4 = this.add
             .image(
-              Number(parentWidth) -
-                (this.escritorio2.width + 20),
+              Number(parentWidth) - (this.escritorio2.width + 20),
               Number(parentHeight) / 1.6,
               "escritorio4"
             )
             .setOrigin(1, 1);
+          this.silla4 = this.add
+            .image(
+              Number(this.escritorio4.x) - Number(this.escritorio4.width / 2.5),
+              this.escritorio4.y,
+              "silla4"
+            )
+            .setOrigin(1, 1);
 
           const arcade = this.physics.add
-            .staticImage(
-              Number(parentWidth),
-              Number(parentHeight),
-              "arcade"
-            )
+            .staticImage(Number(parentWidth), Number(parentHeight), "arcade")
             .setOrigin(1, 1)
             .setDepth(10000);
           const telefono = this.physics.add
@@ -226,11 +283,7 @@ const useConfig = () => {
             .setSize(telefono.width, telefono.height, false)
             .setOffset(0, -telefono.height / 2);
           const capsula = this.physics.add
-            .staticImage(
-              0,
-              Number(parentHeight) - telefono.height,
-              "capsula"
-            )
+            .staticImage(0, Number(parentHeight) - telefono.height, "capsula")
             .setOrigin(0, 1)
             .setDepth(10000);
           capsula.body
@@ -246,11 +299,7 @@ const useConfig = () => {
             .setScale(0.5);
           this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
           const audio1 = this.add
-            .image(
-              Number(parentWidth) / 2,
-              Number(parentHeight),
-              "audio1"
-            )
+            .image(Number(parentWidth) / 2, Number(parentHeight), "audio1")
             .setOrigin(1, 1)
             .setDepth(10000);
           this.add
@@ -262,11 +311,7 @@ const useConfig = () => {
             .setOrigin(1, 1)
             .setDepth(10000);
           const planta1 = this.add
-            .image(
-              Number(parentWidth) / 2.5,
-              Number(parentHeight),
-              "planta1"
-            )
+            .image(Number(parentWidth) / 2.5, Number(parentHeight), "planta1")
             .setOrigin(1, 1)
             .setDepth(10000);
           this.add
@@ -373,9 +418,38 @@ const useConfig = () => {
             frameRate: 3,
             repeat: -1,
           });
+          this.anims.create({
+            key: "sentado",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 96,
+              end: 105,
+            }),
+            frameRate: 0.3,
+            repeat: -1,
+          });
+
+          this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            const fueraDeSofaUno = !sofaUno
+              .getBounds()
+              .contains(pointer.x, pointer.y);
+            const fueraDeSofaDos = !sofaDos
+              .getBounds()
+              .contains(pointer.x, pointer.y);
+
+            if (fueraDeSofaUno && fueraDeSofaDos) {
+              this.sentado = false;
+            }
+          });
         }
 
         update() {
+          if (this.sentado) {
+            this.muchacho?.setVelocityX(0);
+            this.muchacho?.setVelocityY(0);
+            this.muchacho?.anims.play("sentado", true);
+            return;
+          }
+
           if (
             this.cursor?.left.isDown &&
             this.cursor?.down?.isDown &&
@@ -453,9 +527,13 @@ const useConfig = () => {
           this.muchacho!.depth = (this.muchacho!?.y +
             this.muchacho!?.height / 4) as number;
           this.escritorio1!.depth = this.escritorio1?.y as number;
+          this.silla1!.depth = this.silla1?.y as number;
           this.escritorio2!.depth = this.escritorio2?.y as number;
+          this.silla2!.depth = this.silla2?.y as number;
           this.escritorio3!.depth = this.escritorio3?.y as number;
+          this.silla3!.depth = this.silla3?.y as number;
           this.escritorio4!.depth = this.escritorio4?.y as number;
+          this.silla4!.depth = this.silla4?.y as number;
           this.panelDeControl!.depth = this.panelDeControl?.y as number;
 
           if (this.frameCount % 10 === 0) {
@@ -480,9 +558,13 @@ const useConfig = () => {
           const numeroUmbral = 20;
           const bloqueos = [
             this.escritorio1,
+            this.silla1,
             this.escritorio2,
+            this.silla2,
             this.escritorio3,
+            this.silla3,
             this.escritorio4,
+            this.silla4,
             this.panelDeControl,
           ];
 
