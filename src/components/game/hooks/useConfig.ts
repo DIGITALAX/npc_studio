@@ -25,7 +25,8 @@ const useConfig = () => {
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
         frameCount: number = 0;
-        sentado: boolean = false;
+        sentadoSofa: boolean = false;
+        sentadoEscritorio: boolean = false;
 
         constructor() {
           super();
@@ -187,8 +188,23 @@ const useConfig = () => {
             .setScale(1.2);
           sofaUno.setInteractive();
           sofaUno.on("pointerdown", () => {
-            if (this.muchacho) {
-              this.sentado = true;
+            const centroSofaX = sofaUno.x + sofaUno.displayWidth * 0.5;
+            const frenteSofaY = sofaUno.y;
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = sofaUno.displayWidth * 0.5;
+            const toleranciaY = 50;
+
+            if (
+              Math.abs(Number(muchachoX) - centroSofaX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteSofaY) <= toleranciaY
+            ) {
+              this.muchacho!.x = sofaUno.x + sofaUno.displayWidth * 0.5;
+              this.muchacho!.y = 220;
+              this.sentadoSofa = true;
+            } else {
+              this.sentadoSofa = false;
             }
           });
 
@@ -198,8 +214,23 @@ const useConfig = () => {
             .setScale(1.2);
           sofaDos.setInteractive();
           sofaDos.on("pointerdown", () => {
-            if (this.muchacho) {
-              this.sentado = true;
+            const centroSofaX = sofaDos.x + sofaDos.displayWidth * 0.5;
+            const frenteSofaY = sofaDos.y;
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = sofaDos.displayWidth * 0.5;
+            const toleranciaY = 50;
+
+            if (
+              Math.abs(Number(muchachoX) - centroSofaX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteSofaY) <= toleranciaY
+            ) {
+              this.muchacho!.x = sofaDos.x + sofaDos.displayWidth * 0.5;
+              this.muchacho!.y = 220;
+              this.sentadoSofa = true;
+            } else {
+              this.sentadoSofa = false;
             }
           });
 
@@ -225,6 +256,60 @@ const useConfig = () => {
               "silla1"
             )
             .setOrigin(1, 1);
+          this.escritorio1.setInteractive();
+          this.silla1.setInteractive();
+          this.escritorio1.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio1!.x) -
+              Number(this.escritorio1!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio1!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio1!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla1!.x - Number(this.silla1!.width) / 2;
+              this.muchacho!.y = this.silla1!.y - Number(this.silla1!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio1?.setDepth(1);
+              this.silla1?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
+          this.silla1.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio1!.x) -
+              Number(this.escritorio1!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio1!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio1!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla1!.x - Number(this.silla1!.width) / 2;
+              this.muchacho!.y = this.silla1!.y - Number(this.silla1!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio1?.setDepth(1);
+              this.silla1?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
 
           this.escritorio2 = this.add
             .image(
@@ -240,6 +325,60 @@ const useConfig = () => {
               "silla2"
             )
             .setOrigin(1, 1);
+          this.escritorio2.setInteractive();
+          this.silla2.setInteractive();
+          this.escritorio2.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio2!.x) -
+              Number(this.escritorio2!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio2!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio2!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla2!.x - Number(this.silla2!.width) / 2;
+              this.muchacho!.y = this.silla2!.y - Number(this.silla2!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio2?.setDepth(1);
+              this.silla2?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
+          this.silla2.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio2!.x) -
+              Number(this.escritorio2!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio2!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio2!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla2!.x - Number(this.silla2!.width) / 2;
+              this.muchacho!.y = this.silla2!.y - Number(this.silla2!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio2?.setDepth(1);
+              this.silla2?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
 
           this.escritorio3 = this.add
             .image(
@@ -255,6 +394,60 @@ const useConfig = () => {
               "silla3"
             )
             .setOrigin(1, 1);
+          this.escritorio3.setInteractive();
+          this.silla3.setInteractive();
+          this.escritorio3.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio3!.x) -
+              Number(this.escritorio3!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio3!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio3!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla3!.x - Number(this.silla3!.width) / 2;
+              this.muchacho!.y = this.silla3!.y - Number(this.silla3!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio3?.setDepth(1);
+              this.silla3?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
+          this.silla3.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio3!.x) -
+              Number(this.escritorio3!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio3!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio3!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla3!.x - Number(this.silla3!.width) / 2;
+              this.muchacho!.y = this.silla3!.y - Number(this.silla3!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio3?.setDepth(1);
+              this.silla3?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
 
           this.escritorio4 = this.add
             .image(
@@ -270,6 +463,60 @@ const useConfig = () => {
               "silla4"
             )
             .setOrigin(1, 1);
+          this.escritorio4.setInteractive();
+          this.silla4.setInteractive();
+          this.escritorio4.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio4!.x) -
+              Number(this.escritorio4!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio4!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio4!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla4!.x - Number(this.silla4!.width) / 2;
+              this.muchacho!.y = this.silla4!.y - Number(this.silla4!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio4?.setDepth(1);
+              this.silla4?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
+          this.silla4.on("pointerdown", () => {
+            const centroEscritorioX =
+              Number(this.escritorio4!.x) -
+              Number(this.escritorio4!.displayWidth) * 0.5;
+            const frenteEscritorioY = Number(this.escritorio4!.y);
+            const muchachoX = this.muchacho?.x;
+            const muchachoY = this.muchacho?.y;
+
+            const toleranciaX = Number(this.escritorio4!.displayWidth) * 0.5;
+            const toleranciaY = 80;
+
+            if (
+              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
+              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+            ) {
+              this.muchacho!.x =
+                this.silla4!.x - Number(this.silla4!.width) / 2;
+              this.muchacho!.y = this.silla4!.y - Number(this.silla4!.y) / 4;
+              this.sentadoEscritorio = true;
+              this.escritorio4?.setDepth(1);
+              this.silla4?.setDepth(2);
+              this.muchacho?.setDepth(1.5);
+            } else {
+              this.sentadoEscritorio = false;
+            }
+          });
 
           const arcade = this.physics.add
             .staticImage(Number(parentWidth), Number(parentHeight), "arcade")
@@ -419,34 +666,42 @@ const useConfig = () => {
             repeat: -1,
           });
           this.anims.create({
-            key: "sentado",
+            key: "sentadoSofa",
             frames: this.anims.generateFrameNumbers("muchacho", {
-              start: 96,
-              end: 105,
+              start: 97,
+              end: 108,
+            }),
+            frameRate: 0.3,
+            repeat: -1,
+          });
+          this.anims.create({
+            key: "sentadoEscritorio",
+            frames: this.anims.generateFrameNumbers("muchacho", {
+              start: 108,
+              end: 119,
             }),
             frameRate: 0.3,
             repeat: -1,
           });
 
-          this.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            const fueraDeSofaUno = !sofaUno
-              .getBounds()
-              .contains(pointer.x, pointer.y);
-            const fueraDeSofaDos = !sofaDos
-              .getBounds()
-              .contains(pointer.x, pointer.y);
-
-            if (fueraDeSofaUno && fueraDeSofaDos) {
-              this.sentado = false;
-            }
+          this.input.on("pointerdown", () => {
+            this.sentadoSofa = false;
+            this.sentadoEscritorio = false;
           });
         }
 
         update() {
-          if (this.sentado) {
+          if (this.sentadoSofa) {
             this.muchacho?.setVelocityX(0);
             this.muchacho?.setVelocityY(0);
-            this.muchacho?.anims.play("sentado", true);
+            this.muchacho?.anims.play("sentadoSofa", true);
+            return;
+          }
+
+          if (this.sentadoEscritorio) {
+            this.muchacho?.setVelocityX(0);
+            this.muchacho?.setVelocityY(0);
+            this.muchacho?.anims.play("sentadoEscritorio", true);
             return;
           }
 
