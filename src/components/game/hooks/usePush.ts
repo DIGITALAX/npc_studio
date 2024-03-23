@@ -17,7 +17,7 @@ const usePush = () => {
       env: CONSTANTS.ENV.STAGING,
     });
 
-    await user.notification.subscribe(`eip155:11155111:${pushChannelAdress}`);
+    // await user.notification.subscribe(`eip155:11155111:${pushChannelAdress}`);
 
     const response = await user.channel.send(["*"], {
       notification: {
@@ -34,6 +34,7 @@ const usePush = () => {
     const signer = await provider.getSigner(await address.getAddress());
     const me = await PushAPI.initialize(signer, {
       env: CONSTANTS.ENV.PROD,
+      
     });
 
     const response = await me.channel.create({
