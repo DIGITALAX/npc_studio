@@ -25,6 +25,7 @@ const config = getDefaultConfig({
       `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
     ),
   },
+  ssr: true,
 });
 
 const queryClient = new QueryClient();
