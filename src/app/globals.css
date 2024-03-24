@@ -31,14 +31,13 @@ html {
   margin: 0;
   height: 100%;
   background-color: #1100ff;
+  min-height: 100vh;
 }
 
 body {
   background-image: url("https://thedial.infura-ipfs.io/ipfs/QmchvymSLXmGatbUyLYUvHM3AaEhMiSFooizfmnGRMhPsF");
-  margin: 0;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
 }
 
 html::-webkit-scrollbar {

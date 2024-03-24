@@ -32,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="relative w-full h-fit flex flex-col items-start justify-start md:pt-4 md:px-4 min-h-full">
+      <body>
         <Providers>
           {children}
           <Footer />
