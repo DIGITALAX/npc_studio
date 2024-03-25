@@ -24,12 +24,14 @@ const useConfig = () => {
         silla4?: Phaser.GameObjects.Image | null;
         panelDeControl?: Phaser.GameObjects.Image | null;
         cursor?: Phaser.Types.Input.Keyboard.CursorKeys | null;
-        frameCount: number = 0;
-        sentadoSofa: boolean = false;
-        sentadoEscritorio: boolean = false;
+        initialPointerPosition?: { x: number; y: number };
+        frameCount: number;
+        sentadoSofa: boolean;
+        sentadoEscritorio: boolean;
 
         constructor() {
           super();
+          this.initialPointerPosition = { x: 0, y: 0 };
           this.muchacho = null;
           this.cursor = null;
           this.escritorio1 = null;
@@ -37,6 +39,9 @@ const useConfig = () => {
           this.escritorio3 = null;
           this.escritorio4 = null;
           this.panelDeControl = null;
+          this.frameCount = 0;
+          this.sentadoSofa = false;
+          this.sentadoEscritorio = false;
         }
 
         preload() {
@@ -584,6 +589,15 @@ const useConfig = () => {
           this.physics.add.collider(this.muchacho, sofaDos);
           this.muchacho.setCollideWorldBounds(true);
 
+          if (
+            this.sys.game.device.os.iOS ||
+            this.sys.game.device.os.android ||
+            this.sys.game.device.os.iPad ||
+            this.sys.game.device.os.iPhone
+          ) {
+            this.enableTouchControls();
+          }
+
           this.anims.create({
             key: "inactivo",
             frames: this.anims.generateFrameNumbers("muchacho", {
@@ -808,7 +822,7 @@ const useConfig = () => {
           }
           this.frameCount++;
         }
-
+        enableTouchControls() {}
         bloqueoDinamico(direcion: Direcion): boolean {
           const numeroUmbral = 20;
           const bloqueos = [
@@ -882,7 +896,7 @@ const useConfig = () => {
           default: "arcade",
           arcade: {
             gravity: { y: 0, x: 0 },
-            debug: true,
+            debug: false,
           },
         },
         scene: [CustomPhaserScene],

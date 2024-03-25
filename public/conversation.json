@@ -1,0 +1,30 @@
+[
+  {
+    "team": "Game Dev Team",
+    "name": "Olivia",
+    "message": "Sometimes I wonder if the characters we create have lives of their own, beyond the screen. Like, do they dream? Do they hope?",
+    "color": "#2E91D4",
+    "base": "#7AB3DD"
+  },
+  {
+    "team": "LLM Infrastructure Team",
+    "name": "Liam",
+    "message": "I had a dream last night that I was a neural network, processing data in an endless stream. It was both terrifying and exhilarating.",
+    "color": "#ED5700",
+    "base": "#D76645"
+  },
+  {
+    "team": "Resource Management Team",
+    "name": "Sofia",
+    "message": "Do you ever feel like we're all just particles in a grand cosmic dance, swirling and colliding in patterns we can't even begin to comprehend?",
+    "color": "#FFDCFF",
+    "base": "#FFFFFF"
+  },
+  {
+    "team": "Game Dev Team",
+    "name": "Ethan",
+    "message": "I often think about the nature of reality. Are we living in a simulation? Is anything truly real, or is it all just a construct of our minds?",
+    "color": "#F700DB",
+    "base": "#1100ff"
+  }
+]
