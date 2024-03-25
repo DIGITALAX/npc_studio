@@ -11,19 +11,22 @@ function Dialog() {
     setIndiceConversacionActual,
     indiceConversacionActual,
     setIndiceMensajeActual,
+    contenedorMensajesRef
   } = useDialog();
-  console.log({ indiceConversacionActual });
   return (
     <div className="relative w-full h-fit flex items-start justify-start md:px-0 px-1 md:pb-0 pb-5">
       <div className="relative w-full h-96 flex flex-col items-start justify-start bg-black/80 rounded-md border-4 border-white p-4">
         <div
           className="relative w-full h-full flex flex-col items-start justify-start font-at text-3xl text-white overflow-y-scroll"
           key={indiceConversacionActual}
+          ref={contenedorMensajesRef}
         >
           {messages[indiceConversacionActual]
             .slice(0, indiceMensajeActual + 1)
             .map((msg, index) => (
-              <div key={index}>
+              <div
+                key={index}
+              >
                 {index === indiceMensajeActual ? (
                   <Typist
                     onTypingDone={handleCompletaTyping}
