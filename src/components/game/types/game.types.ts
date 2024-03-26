@@ -17,3 +17,9 @@ export interface Message {
   color: string;
   base: string;
 }
+
+export interface Waypoint {
+  destino: { x: number; y: number };
+  direccion: string;
+  duracion?: number;
+}

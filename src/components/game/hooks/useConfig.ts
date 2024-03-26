@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import { INFURA_GATEWAY } from "../../../../lib/constants";
-import { Direcion } from "../types/game.types";
+import { Direcion, Waypoint } from "../types/game.types";
 
 const useConfig = () => {
   const gameRef = useRef<HTMLElement | undefined>(null);
@@ -28,6 +28,9 @@ const useConfig = () => {
         frameCount: number;
         sentadoSofa: boolean;
         sentadoEscritorio: boolean;
+        waypoints: Waypoint[];
+        currentWaypointIndex: number;
+        isMoving: boolean;
 
         constructor() {
           super();
@@ -42,6 +45,99 @@ const useConfig = () => {
           this.frameCount = 0;
           this.sentadoSofa = false;
           this.sentadoEscritorio = false;
+          this.isMoving = false;
+          this.currentWaypointIndex = 0;
+          this.waypoints = [
+            {
+              direccion: "derecha",
+              destino: { x: 902, y: 576 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 902, y: 576 },
+              duracion: 5000,
+            },
+            {
+              direccion: "abajo",
+              destino: { x: 902, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 902, y: 680 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 1280.5, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 1280.5, y: 680 },
+              duracion: 15000,
+            },
+            {
+              direccion: "izquierda",
+              destino: { x: 196, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 196, y: 680 },
+              duracion: 1000,
+            },
+            {
+              direccion: "arriba",
+              destino: { x: 196, y: 421 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 196, y: 421 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 584, y: 421 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 421 },
+              duracion: 1000,
+            },
+            {
+              direccion: "arriba",
+              destino: { x: 584, y: 210 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 210 },
+              duracion: 1000,
+            },
+            {
+              direccion: "abajo",
+              destino: { x: 584, y: 303 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 303 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 1336, y: 303 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 1336, y: 303 },
+              duracion: 10000,
+            },
+            {
+              direccion: "sentadoEscritorio",
+              destino: {
+                x: 1336,
+                y: this.silla1!?.y - Number(this.silla1!?.y) / 4,
+              },
+              duracion: 15000,
+            },
+          ];
         }
 
         preload() {
@@ -550,6 +646,7 @@ const useConfig = () => {
             )
             .setScale(0.5);
           this.cameras.main.startFollow(this.muchacho, true, 0.05, 0.05);
+
           const audio1 = this.add
             .image(Number(parentWidth) / 2, Number(parentHeight), "audio1")
             .setOrigin(1, 1)
@@ -589,14 +686,14 @@ const useConfig = () => {
           this.physics.add.collider(this.muchacho, sofaDos);
           this.muchacho.setCollideWorldBounds(true);
 
-          if (
-            this.sys.game.device.os.iOS ||
-            this.sys.game.device.os.android ||
-            this.sys.game.device.os.iPad ||
-            this.sys.game.device.os.iPhone
-          ) {
-            this.enableTouchControls();
-          }
+          // if (
+          //   this.sys.game.device.os.iOS ||
+          //   this.sys.game.device.os.android ||
+          //   this.sys.game.device.os.iPad ||
+          //   this.sys.game.device.os.iPhone
+          // ) {
+          //   this.enableTouchControls();
+          // }
 
           this.anims.create({
             key: "inactivo",
@@ -705,105 +802,122 @@ const useConfig = () => {
         }
 
         update() {
-          if (this.sentadoSofa) {
-            this.muchacho?.setVelocityX(0);
-            this.muchacho?.setVelocityY(0);
-            this.muchacho?.anims.play("sentadoSofa", true);
-            return;
+          if (!this.isMoving && this.waypoints.length > 0) {
+            const waypoint = this.waypoints[this.currentWaypointIndex];
+
+            if (
+              waypoint.direccion === "sentadoSofa" ||
+              waypoint.direccion === "sentadoEscritorio"
+            ) {
+              this.handleSittingAction(waypoint);
+            } else if (waypoint.direccion !== "inactivo") {
+              this.moveCharacterTo(waypoint);
+            } else {
+              this.handleAction(waypoint);
+
+              this.muchacho!.depth = (this.muchacho!?.y +
+                this.muchacho!?.height / 4) as number;
+              this.escritorio1!.depth = this.escritorio1?.y as number;
+              this.silla1!.depth = this.silla1?.y as number;
+              this.escritorio2!.depth = this.escritorio2?.y as number;
+              this.silla2!.depth = this.silla2?.y as number;
+              this.escritorio3!.depth = this.escritorio3?.y as number;
+              this.silla3!.depth = this.silla3?.y as number;
+              this.escritorio4!.depth = this.escritorio4?.y as number;
+              this.silla4!.depth = this.silla4?.y as number;
+              this.panelDeControl!.depth = this.panelDeControl?.y as number;
+            }
           }
 
-          if (this.sentadoEscritorio) {
-            this.muchacho?.setVelocityX(0);
-            this.muchacho?.setVelocityY(0);
-            this.muchacho?.anims.play("sentadoEscritorio", true);
-            return;
-          }
+          console.log(this.muchacho?.x, this.muchacho?.y);
 
-          if (
-            this.cursor?.left.isDown &&
-            this.cursor?.down?.isDown &&
-            this.bloqueoDinamico(Direcion.Izquierda) &&
-            this.bloqueoDinamico(Direcion.Abajo)
-          ) {
-            this.muchacho?.setVelocityX(-160);
-            this.muchacho?.setVelocityY(160);
-            this.muchacho?.anims.play("izquierdaAbajo", true);
-          } else if (
-            this.cursor?.left.isDown &&
-            this.cursor?.up?.isDown &&
-            this.bloqueoDinamico(Direcion.Izquierda) &&
-            this.bloqueoDinamico(Direcion.Arriba)
-          ) {
-            this.muchacho?.setVelocityX(-160);
-            this.muchacho?.setVelocityY(-160);
-            this.muchacho?.anims.play("izquierdaArriba", true);
-          } else if (
-            this.cursor?.right.isDown &&
-            this.cursor?.down?.isDown &&
-            this.bloqueoDinamico(Direcion.Abajo) &&
-            this.bloqueoDinamico(Direcion.Derecha)
-          ) {
-            this.muchacho?.setVelocityX(160);
-            this.muchacho?.setVelocityY(160);
-            this.muchacho?.anims.play("derechaAbajo", true);
-          } else if (
-            this.cursor?.right.isDown &&
-            this.cursor?.up?.isDown &&
-            this.bloqueoDinamico(Direcion.Arriba) &&
-            this.bloqueoDinamico(Direcion.Derecha)
-          ) {
-            this.muchacho?.setVelocityX(160);
-            this.muchacho?.setVelocityY(-160);
-            this.muchacho?.anims.play("derechaArriba", true);
-          } else if (
-            this.cursor?.left.isDown &&
-            this.bloqueoDinamico(Direcion.Izquierda)
-          ) {
-            this.muchacho?.setVelocityX(-160);
-            this.muchacho?.anims.play("izquierda", true);
-          } else if (
-            this.cursor?.right.isDown &&
-            this.bloqueoDinamico(Direcion.Derecha)
-          ) {
-            this.muchacho?.setVelocityX(160);
-            this.muchacho?.anims.play("derecha", true);
-          } else if (
-            this.cursor?.up.isDown &&
-            this.bloqueoDinamico(Direcion.Arriba)
-          ) {
-            this.muchacho?.setVelocityY(-160);
-            this.muchacho?.anims.play("arriba", true);
-          } else if (
-            this.cursor?.down.isDown &&
-            this.bloqueoDinamico(Direcion.Abajo)
-          ) {
-            this.muchacho?.setVelocityY(160);
-            this.muchacho?.anims.play("abajo", true);
-          } else {
-            this.muchacho?.setVelocityY(0);
-            this.muchacho?.setVelocityX(0);
-          }
+          // if (this.sentadoSofa) {
+          //   this.muchacho?.setVelocityX(0);
+          //   this.muchacho?.setVelocityY(0);
+          //   this.muchacho?.anims.play("sentadoSofa", true);
+          //   return;
+          // }
 
-          if (
-            !this.cursor?.left.isDown &&
-            !this.cursor?.right.isDown &&
-            !this.cursor?.up.isDown &&
-            !this.cursor?.down.isDown
-          ) {
-            this.muchacho?.anims.play("inactivo", true);
-          }
+          // if (this.sentadoEscritorio) {
+          //   this.muchacho?.setVelocityX(0);
+          //   this.muchacho?.setVelocityY(0);
+          //   this.muchacho?.anims.play("sentadoEscritorio", true);
+          //   return;
+          // }
 
-          this.muchacho!.depth = (this.muchacho!?.y +
-            this.muchacho!?.height / 4) as number;
-          this.escritorio1!.depth = this.escritorio1?.y as number;
-          this.silla1!.depth = this.silla1?.y as number;
-          this.escritorio2!.depth = this.escritorio2?.y as number;
-          this.silla2!.depth = this.silla2?.y as number;
-          this.escritorio3!.depth = this.escritorio3?.y as number;
-          this.silla3!.depth = this.silla3?.y as number;
-          this.escritorio4!.depth = this.escritorio4?.y as number;
-          this.silla4!.depth = this.silla4?.y as number;
-          this.panelDeControl!.depth = this.panelDeControl?.y as number;
+          // if (
+          //   this.cursor?.left.isDown &&
+          //   this.cursor?.down?.isDown &&
+          //   this.bloqueoDinamico(Direcion.Izquierda) &&
+          //   this.bloqueoDinamico(Direcion.Abajo)
+          // ) {
+          //   this.muchacho?.setVelocityX(-160);
+          //   this.muchacho?.setVelocityY(160);
+          //   this.muchacho?.anims.play("izquierdaAbajo", true);
+          // } else if (
+          //   this.cursor?.left.isDown &&
+          //   this.cursor?.up?.isDown &&
+          //   this.bloqueoDinamico(Direcion.Izquierda) &&
+          //   this.bloqueoDinamico(Direcion.Arriba)
+          // ) {
+          //   this.muchacho?.setVelocityX(-160);
+          //   this.muchacho?.setVelocityY(-160);
+          //   this.muchacho?.anims.play("izquierdaArriba", true);
+          // } else if (
+          //   this.cursor?.right.isDown &&
+          //   this.cursor?.down?.isDown &&
+          //   this.bloqueoDinamico(Direcion.Abajo) &&
+          //   this.bloqueoDinamico(Direcion.Derecha)
+          // ) {
+          //   this.muchacho?.setVelocityX(160);
+          //   this.muchacho?.setVelocityY(160);
+          //   this.muchacho?.anims.play("derechaAbajo", true);
+          // } else if (
+          //   this.cursor?.right.isDown &&
+          //   this.cursor?.up?.isDown &&
+          //   this.bloqueoDinamico(Direcion.Arriba) &&
+          //   this.bloqueoDinamico(Direcion.Derecha)
+          // ) {
+          //   this.muchacho?.setVelocityX(160);
+          //   this.muchacho?.setVelocityY(-160);
+          //   this.muchacho?.anims.play("derechaArriba", true);
+          // } else if (
+          //   this.cursor?.left.isDown &&
+          //   this.bloqueoDinamico(Direcion.Izquierda)
+          // ) {
+          //   this.muchacho?.setVelocityX(-160);
+          //   this.muchacho?.anims.play("izquierda", true);
+          // } else if (
+          //   this.cursor?.right.isDown &&
+          //   this.bloqueoDinamico(Direcion.Derecha)
+          // ) {
+          //   this.muchacho?.setVelocityX(160);
+          //   this.muchacho?.anims.play("derecha", true);
+          // } else if (
+          //   this.cursor?.up.isDown &&
+          //   this.bloqueoDinamico(Direcion.Arriba)
+          // ) {
+          //   this.muchacho?.setVelocityY(-160);
+          //   this.muchacho?.anims.play("arriba", true);
+          // } else if (
+          //   this.cursor?.down.isDown &&
+          //   this.bloqueoDinamico(Direcion.Abajo)
+          // ) {
+          //   this.muchacho?.setVelocityY(160);
+          //   this.muchacho?.anims.play("abajo", true);
+          // } else {
+          //   this.muchacho?.setVelocityY(0);
+          //   this.muchacho?.setVelocityX(0);
+          // }
+
+          // if (
+          //   !this.cursor?.left.isDown &&
+          //   !this.cursor?.right.isDown &&
+          //   !this.cursor?.up.isDown &&
+          //   !this.cursor?.down.isDown
+          // ) {
+          //   this.muchacho?.anims.play("inactivo", true);
+          // }
 
           if (this.frameCount % 10 === 0) {
             this.game.renderer.snapshot((snapshot: any) => {
@@ -822,7 +936,73 @@ const useConfig = () => {
           }
           this.frameCount++;
         }
-        enableTouchControls() {}
+        moveCharacterTo(waypoint: Waypoint) {
+          const { destino, direccion } = waypoint;
+          this.muchacho?.anims.play(direccion, true);
+          this.physics.moveTo(this.muchacho!, destino.x, destino.y, 100);
+
+          const distance = Phaser.Math.Distance.Between(
+            this.muchacho?.x!,
+            this.muchacho?.y!,
+            destino.x,
+            destino.y
+          );
+
+          if (distance < 4) {
+            this.muchacho?.body?.stop();
+            this.muchacho?.setPosition(destino.x, destino.y);
+            this.isMoving = false;
+            this.advanceToNextWaypoint();
+          }
+        }
+        handleSittingAction(waypoint: Waypoint) {
+          if (waypoint.direccion === "sentadoSofa") {
+            this.adjustCharacterForSitting(
+              { x: waypoint.destino.x, y: waypoint.destino.y },
+              "sentadoSofa"
+            );
+          } else if (waypoint.direccion === "sentadoEscritorio") {
+            this.adjustCharacterForSitting(
+              { x: waypoint.destino.x, y: waypoint.destino.y },
+              "sentadoEscritorio"
+            );
+          }
+
+          this.time.delayedCall(waypoint.duracion || 1000, () => {
+            this.advanceToNextWaypoint();
+          });
+        }
+        adjustCharacterForSitting(
+          destino: {
+            x: number;
+            y: number;
+          },
+          action: string
+        ) {
+          this.muchacho?.body?.stop();
+          this.muchacho?.setPosition(destino.x, destino.y);
+          this.muchacho?.anims.play(action, true);
+          if (action === "sentadoEscritorio") {
+            this.muchacho!.depth = this.escritorio1!?.depth + 1;
+          }
+          this.isMoving = false;
+        }
+        handleAction(waypoint: Waypoint) {
+          const { duracion, direccion } = waypoint;
+          this.isMoving = true;
+          if (direccion) this.muchacho?.anims.play(direccion, true);
+
+          this.time.delayedCall(duracion!, () => {
+            this.isMoving = false;
+            this.advanceToNextWaypoint();
+          });
+        }
+        advanceToNextWaypoint() {
+          this.currentWaypointIndex++;
+          if (this.currentWaypointIndex >= this.waypoints.length) {
+            this.currentWaypointIndex = 0;
+          }
+        }
         bloqueoDinamico(direcion: Direcion): boolean {
           const numeroUmbral = 20;
           const bloqueos = [
