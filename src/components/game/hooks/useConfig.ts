@@ -47,97 +47,7 @@ const useConfig = () => {
           this.sentadoEscritorio = false;
           this.isMoving = false;
           this.currentWaypointIndex = 0;
-          this.waypoints = [
-            {
-              direccion: "derecha",
-              destino: { x: 902, y: 576 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 902, y: 576 },
-              duracion: 5000,
-            },
-            {
-              direccion: "abajo",
-              destino: { x: 902, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 902, y: 680 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 1280.5, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 1280.5, y: 680 },
-              duracion: 15000,
-            },
-            {
-              direccion: "izquierda",
-              destino: { x: 196, y: 680 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 196, y: 680 },
-              duracion: 1000,
-            },
-            {
-              direccion: "arriba",
-              destino: { x: 196, y: 421 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 196, y: 421 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 584, y: 421 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 421 },
-              duracion: 1000,
-            },
-            {
-              direccion: "arriba",
-              destino: { x: 584, y: 210 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 210 },
-              duracion: 1000,
-            },
-            {
-              direccion: "abajo",
-              destino: { x: 584, y: 303 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 584, y: 303 },
-              duracion: 1000,
-            },
-            {
-              direccion: "derecha",
-              destino: { x: 1336, y: 303 },
-            },
-            {
-              direccion: "inactivo",
-              destino: { x: 1336, y: 303 },
-              duracion: 10000,
-            },
-            {
-              direccion: "sentadoEscritorio",
-              destino: {
-                x: 1336,
-                y: this.silla1!?.y - Number(this.silla1!?.y) / 4,
-              },
-              duracion: 15000,
-            },
-          ];
+          this.waypoints = [];
         }
 
         preload() {
@@ -287,53 +197,11 @@ const useConfig = () => {
             .image(fondo.width / 1.5, pared.height / 1.4, "sofaUno")
             .setOrigin(0, 0)
             .setScale(1.2);
-          sofaUno.setInteractive();
-          sofaUno.on("pointerdown", () => {
-            const centroSofaX = sofaUno.x + sofaUno.displayWidth * 0.5;
-            const frenteSofaY = sofaUno.y;
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = sofaUno.displayWidth * 0.5;
-            const toleranciaY = 50;
-
-            if (
-              Math.abs(Number(muchachoX) - centroSofaX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteSofaY) <= toleranciaY
-            ) {
-              this.muchacho!.x = sofaUno.x + sofaUno.displayWidth * 0.5;
-              this.muchacho!.y = 220;
-              this.sentadoSofa = true;
-            } else {
-              this.sentadoSofa = false;
-            }
-          });
 
           const sofaDos = this.add
             .image(fondo.width / 0.9, pared.height / 1.4, "sofaDos")
             .setOrigin(0, 0)
             .setScale(1.2);
-          sofaDos.setInteractive();
-          sofaDos.on("pointerdown", () => {
-            const centroSofaX = sofaDos.x + sofaDos.displayWidth * 0.5;
-            const frenteSofaY = sofaDos.y;
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = sofaDos.displayWidth * 0.5;
-            const toleranciaY = 50;
-
-            if (
-              Math.abs(Number(muchachoX) - centroSofaX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteSofaY) <= toleranciaY
-            ) {
-              this.muchacho!.x = sofaDos.x + sofaDos.displayWidth * 0.5;
-              this.muchacho!.y = 220;
-              this.sentadoSofa = true;
-            } else {
-              this.sentadoSofa = false;
-            }
-          });
 
           this.panelDeControl = this.add
             .image(
@@ -357,61 +225,6 @@ const useConfig = () => {
               "silla1"
             )
             .setOrigin(1, 1);
-          this.escritorio1.setInteractive();
-          this.silla1.setInteractive();
-          this.escritorio1.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio1!.x) -
-              Number(this.escritorio1!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio1!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio1!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla1!.x - Number(this.silla1!.width) / 2;
-              this.muchacho!.y = this.silla1!.y - Number(this.silla1!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio1?.setDepth(1);
-              this.silla1?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
-          this.silla1.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio1!.x) -
-              Number(this.escritorio1!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio1!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio1!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla1!.x - Number(this.silla1!.width) / 2;
-              this.muchacho!.y = this.silla1!.y - Number(this.silla1!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio1?.setDepth(1);
-              this.silla1?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
-
           this.escritorio2 = this.add
             .image(
               Number(parentWidth) - 20,
@@ -426,60 +239,6 @@ const useConfig = () => {
               "silla2"
             )
             .setOrigin(1, 1);
-          this.escritorio2.setInteractive();
-          this.silla2.setInteractive();
-          this.escritorio2.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio2!.x) -
-              Number(this.escritorio2!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio2!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio2!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla2!.x - Number(this.silla2!.width) / 2;
-              this.muchacho!.y = this.silla2!.y - Number(this.silla2!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio2?.setDepth(1);
-              this.silla2?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
-          this.silla2.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio2!.x) -
-              Number(this.escritorio2!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio2!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio2!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla2!.x - Number(this.silla2!.width) / 2;
-              this.muchacho!.y = this.silla2!.y - Number(this.silla2!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio2?.setDepth(1);
-              this.silla2?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
 
           this.escritorio3 = this.add
             .image(
@@ -495,60 +254,6 @@ const useConfig = () => {
               "silla3"
             )
             .setOrigin(1, 1);
-          this.escritorio3.setInteractive();
-          this.silla3.setInteractive();
-          this.escritorio3.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio3!.x) -
-              Number(this.escritorio3!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio3!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio3!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla3!.x - Number(this.silla3!.width) / 2;
-              this.muchacho!.y = this.silla3!.y - Number(this.silla3!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio3?.setDepth(1);
-              this.silla3?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
-          this.silla3.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio3!.x) -
-              Number(this.escritorio3!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio3!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio3!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla3!.x - Number(this.silla3!.width) / 2;
-              this.muchacho!.y = this.silla3!.y - Number(this.silla3!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio3?.setDepth(1);
-              this.silla3?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
 
           this.escritorio4 = this.add
             .image(
@@ -564,60 +269,6 @@ const useConfig = () => {
               "silla4"
             )
             .setOrigin(1, 1);
-          this.escritorio4.setInteractive();
-          this.silla4.setInteractive();
-          this.escritorio4.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio4!.x) -
-              Number(this.escritorio4!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio4!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio4!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla4!.x - Number(this.silla4!.width) / 2;
-              this.muchacho!.y = this.silla4!.y - Number(this.silla4!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio4?.setDepth(1);
-              this.silla4?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
-          this.silla4.on("pointerdown", () => {
-            const centroEscritorioX =
-              Number(this.escritorio4!.x) -
-              Number(this.escritorio4!.displayWidth) * 0.5;
-            const frenteEscritorioY = Number(this.escritorio4!.y);
-            const muchachoX = this.muchacho?.x;
-            const muchachoY = this.muchacho?.y;
-
-            const toleranciaX = Number(this.escritorio4!.displayWidth) * 0.5;
-            const toleranciaY = 80;
-
-            if (
-              Math.abs(Number(muchachoX) - centroEscritorioX) <= toleranciaX &&
-              Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
-            ) {
-              this.muchacho!.x =
-                this.silla4!.x - Number(this.silla4!.width) / 2;
-              this.muchacho!.y = this.silla4!.y - Number(this.silla4!.y) / 4;
-              this.sentadoEscritorio = true;
-              this.escritorio4?.setDepth(1);
-              this.silla4?.setDepth(2);
-              this.muchacho?.setDepth(1.5);
-            } else {
-              this.sentadoEscritorio = false;
-            }
-          });
 
           const arcade = this.physics.add
             .staticImage(Number(parentWidth), Number(parentHeight), "arcade")
@@ -799,6 +450,98 @@ const useConfig = () => {
             this.sentadoSofa = false;
             this.sentadoEscritorio = false;
           });
+
+          this.waypoints = [
+            {
+              direccion: "derecha",
+              destino: { x: 902, y: 576 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 902, y: 576 },
+              duracion: 5000,
+            },
+            {
+              direccion: "abajo",
+              destino: { x: 902, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 902, y: 680 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 1280.5, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 1280.5, y: 680 },
+              duracion: 15000,
+            },
+            {
+              direccion: "izquierda",
+              destino: { x: 196, y: 680 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 196, y: 680 },
+              duracion: 1000,
+            },
+            {
+              direccion: "arriba",
+              destino: { x: 196, y: 421 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 196, y: 421 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 584, y: 421 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 421 },
+              duracion: 1000,
+            },
+            {
+              direccion: "arriba",
+              destino: { x: 584, y: 210 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 210 },
+              duracion: 1000,
+            },
+            {
+              direccion: "abajo",
+              destino: { x: 584, y: 303 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 584, y: 303 },
+              duracion: 1000,
+            },
+            {
+              direccion: "derecha",
+              destino: { x: 1336, y: 303 },
+            },
+            {
+              direccion: "inactivo",
+              destino: { x: 1336, y: 303 },
+              duracion: 10000,
+            },
+            {
+              direccion: "sentadoEscritorio",
+              destino: {
+                x: 1336,
+                y: this.silla1!?.y - Number(this.silla1!?.y) / 4,
+              },
+              duracion: 15000,
+            },
+          ];
         }
 
         update() {
@@ -828,9 +571,6 @@ const useConfig = () => {
               this.panelDeControl!.depth = this.panelDeControl?.y as number;
             }
           }
-
-          console.log(this.muchacho?.x, this.muchacho?.y);
-
           // if (this.sentadoSofa) {
           //   this.muchacho?.setVelocityX(0);
           //   this.muchacho?.setVelocityY(0);
@@ -956,17 +696,10 @@ const useConfig = () => {
           }
         }
         handleSittingAction(waypoint: Waypoint) {
-          if (waypoint.direccion === "sentadoSofa") {
-            this.adjustCharacterForSitting(
-              { x: waypoint.destino.x, y: waypoint.destino.y },
-              "sentadoSofa"
-            );
-          } else if (waypoint.direccion === "sentadoEscritorio") {
-            this.adjustCharacterForSitting(
-              { x: waypoint.destino.x, y: waypoint.destino.y },
-              "sentadoEscritorio"
-            );
-          }
+          this.adjustCharacterForSitting(
+            { x: waypoint.destino.x, y: waypoint.destino.y },
+            waypoint.direccion
+          );
 
           this.time.delayedCall(waypoint.duracion || 1000, () => {
             this.advanceToNextWaypoint();
@@ -982,10 +715,43 @@ const useConfig = () => {
           this.muchacho?.body?.stop();
           this.muchacho?.setPosition(destino.x, destino.y);
           this.muchacho?.anims.play(action, true);
+
           if (action === "sentadoEscritorio") {
-            this.muchacho!.depth = this.escritorio1!?.depth + 1;
+            this.handleTolerancia();
           }
-          this.isMoving = false;
+        }
+        handleTolerancia() {
+          [
+            { escritorio: this.escritorio1!, silla: this.silla1! },
+            { escritorio: this.escritorio2!, silla: this.silla2! },
+            { escritorio: this.escritorio3!, silla: this.silla3! },
+            { escritorio: this.escritorio4!, silla: this.silla4! },
+          ].forEach(
+            (item: {
+              escritorio: Phaser.GameObjects.Image;
+              silla: Phaser.GameObjects.Image;
+            }) => {
+              const centroEscritorioX =
+                Number(item.escritorio.x) -
+                Number(item.escritorio.displayWidth) * 0.5;
+              const frenteEscritorioY = Number(item.escritorio.y);
+              const muchachoX = this.muchacho?.x;
+              const muchachoY = this.muchacho?.y;
+
+              const toleranciaX = Number(item.escritorio.displayWidth) * 0.5;
+              const toleranciaY = 100;
+            
+              if (
+                Math.abs(Number(muchachoX) - centroEscritorioX) <=
+                  toleranciaX &&
+                Math.abs(Number(muchachoY) - frenteEscritorioY) <= toleranciaY
+              ) {
+                item.escritorio?.setDepth(1);
+                item.silla?.setDepth(2);
+                this.muchacho?.setDepth(1.5);
+              }
+            }
+          );
         }
         handleAction(waypoint: Waypoint) {
           const { duracion, direccion } = waypoint;
